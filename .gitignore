@@ -1,0 +1,9 @@
+.DS_Store
+# Default ignored files
+client/shelf/
+client/workspace.xml
+# Datasource local storage ignored files
+client/dataSources/
+client/dataSources.local.xml
+# Editor-based HTTP Client requests
+client/httpRequests/

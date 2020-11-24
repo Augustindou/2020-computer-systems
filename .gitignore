@@ -7,3 +7,6 @@ client/dataSources/
 client/dataSources.local.xml
 # Editor-based HTTP Client requests
 client/httpRequests/
+
+# Server database
+server/assets/dbdata.txt

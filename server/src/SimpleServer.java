@@ -1,40 +1,39 @@
 /*
- * LINGI2241 - Computer Systems Project
+ * LINGI2241 - Computer Systems
+ *      Augustin d'Oultremont - 2239 1700
+ *      Valentin Lemaire - 1634 1700
  *
- * Augustin d'Oultremont - Valentin Lemaire
- *      22391700               16341700
- */
-
-
-/*
- * Copyright (c) 1995, 2014, Oracle and/or its affiliates. All rights reserved.
+ *      This class is heavily based on this tutorial:
+ *      https://docs.oracle.com/javase/tutorial/networking/sockets/clientServer.html
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
+ *      Copyright (c) 1995, 2014, Oracle and/or its affiliates. All rights reserved.
  *
- *   - Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
+ *      Redistribution and use in source and binary forms, with or without
+ *      modification, are permitted provided that the following conditions
+ *      are met:
  *
- *   - Redistributions in binary form must reproduce the above copyright
- *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution.
+ *          - Redistributions of source code must retain the above copyright
+ *            notice, this list of conditions and the following disclaimer.
  *
- *   - Neither the name of Oracle or the names of its
- *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission.
+ *          - Redistributions in binary form must reproduce the above copyright
+ *            notice, this list of conditions and the following disclaimer in the
+ *            documentation and/or other materials provided with the distribution.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
- * IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *          - Neither the name of Oracle or the names of its
+ *            contributors may be used to endorse or promote products derived
+ *            from this software without specific prior written permission.
+ *
+ *      THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+ *      IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ *      THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ *      PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ *      CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ *      EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ *      PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ *      PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ *      LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ *      NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ *      SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 import java.net.*;
@@ -49,14 +48,14 @@ public class SimpleServer {
     private static final int N_THREADS = 2;
 
     public static void main(String[] args) throws IOException {
-        if (args.length != 1) {
-            System.err.println("Usage: java SimpleServer <port number>");
+        if (args.length != 2) {
+            System.err.println("Usage: java SimpleServer <port number> <database text file>");
             System.exit(1);
         }
 
-        String dbfile = args[0];
-
         int portNumber = Integer.parseInt(args[0]);
+        String dbfile = args[1];
+
         String[][] dataArray = initArray(dbfile);
 
         ServerSocket serverSocket = new ServerSocket(portNumber);
@@ -133,11 +132,19 @@ public class SimpleServer {
 
                 StringBuilder toSend = new StringBuilder();
                 for (int i = 0; i < this.dataArray.length; i++) {
-                    for (String type : types) {
-                        if (this.dataArray[i][0].equals(type)) {
-                            Matcher matcher = pattern.matcher(this.dataArray[i][1]);
-                            if (matcher.find()) {
-                                toSend.append(this.dataArray[i][0]).append("@@@").append(this.dataArray[i][1]).append("\n");
+                    if (types.length == 0) {
+                        Matcher matcher = pattern.matcher(this.dataArray[i][1]);
+                        if (matcher.find()) {
+                            toSend.append(this.dataArray[i][0]).append("@@@").append(this.dataArray[i][1]).append("\n");
+                        }
+                    } else {
+                        for (String type : types) {
+                            if (this.dataArray[i][0].equals(type)) {
+                                Matcher matcher = pattern.matcher(this.dataArray[i][1]);
+                                if (matcher.find()) {
+                                    toSend.append(this.dataArray[i][0]).append("@@@").append(this.dataArray[i][1]).append("\n");
+                                }
+                                break;
                             }
                         }
                     }

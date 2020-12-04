@@ -2,7 +2,7 @@
  *      Valentin Lemaire - 1634 1700
  *      Augustin d'Oultremont - 2239 1700
  *
- * this class is heavily based on this tutorial :
+ *      This class is heavily based on this tutorial :
  *      https://docs.oracle.com/javase/tutorial/networking/sockets/clientServer.html
  *
  *      Copyright (c) 1995, 2013, Oracle and/or its affiliates. All rights reserved.
@@ -57,29 +57,34 @@ public class Clients {
         for (int i = 0; i<numberOfClients; i++){
             try (
                     // create socket and other closable elements
-                    Socket Socket = new Socket(hostName, portNumber);
-                    PrintWriter out = new PrintWriter(Socket.getOutputStream(), true);
-                    BufferedReader in = new BufferedReader(
-                            new InputStreamReader(Socket.getInputStream()));
-                    Scanner input = new Scanner(new File(inputFilename));
+                    Socket socket = new Socket(hostName, portNumber);
             ) {
-                BufferedReader stdIn =
-                        new BufferedReader(new InputStreamReader(System.in));
+                BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
 
                 // handle sending to server
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        // read and send each line of the file
-                        while (input.hasNext()) {
-                            String line = input.nextLine();
-                            out.println(line);
-                            try {
-                                Thread.sleep((long) Math.random() * 1000);
-                            } catch (InterruptedException iExc) {
-                                System.err.println(iExc);
+                        try (
+                                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                                Scanner input = new Scanner(new File(inputFilename));
+                        ) {
+                            // read and send each line of the file
+                            while (input.hasNext()) {
+                                String line = input.nextLine();
+                                out.println(line);
+                                try {
+                                    Thread.sleep((long) (Math.random() * 1000));
+                                } catch (InterruptedException iExc) {
+                                    System.err.println(iExc);
+                                    System.exit(1);
+                                }
                             }
+                        } catch (IOException e) {
+                            System.err.println(e);
+                            System.exit(1);
                         }
+
                     }
                 }).start();
 
@@ -87,7 +92,9 @@ public class Clients {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        try {
+                        try (
+                            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                        ){
                             // read and print server's response
                             String fromServer;
                             while ((fromServer = in.readLine()) != null){

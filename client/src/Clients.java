@@ -38,78 +38,109 @@
 import java.io.*;
 import java.net.*;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Clients {
     public static void main(String[] args) throws IOException {
         // parse args
-        if (args.length != 4) {
+        if (args.length != 5) {
             System.err.println(
-                    "Usage: java EchoClients <host name> <port number> <number of clients> <input file>");
+                    "Usage: java Clients <host name> <port number> <number of clients> <input file> <mean delay>");
             System.exit(1);
         }
 
         String hostName = args[0];
         int portNumber = Integer.parseInt(args[1]);
         int numberOfClients = Integer.parseInt(args[2]);
+        float meanDelay = Float.parseFloat(args[3]);
         String inputFilename = args[3];
 
-        for (int i = 0; i<numberOfClients; i++){
-            try (
-                    // create socket and other closable elements
-                    Socket socket = new Socket(hostName, portNumber);
-            ) {
-                BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+        Thread[] threads = new Thread[numberOfClients];
 
-                // handle sending to server
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try (
-                                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                                Scanner input = new Scanner(new File(inputFilename));
-                        ) {
-                            // read and send each line of the file
-                            while (input.hasNext()) {
-                                String line = input.nextLine();
-                                out.println(line);
+        for (int i = 0; i<numberOfClients; i++){
+            // handle sending to server
+            threads[i] = new Thread(() -> {
+                try (
+                        final Socket socket = new Socket(hostName, portNumber);
+                        final PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                        final BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                        final Scanner inputScanner = new Scanner(new File(inputFilename));
+                ) {
+                    final var ref = new Object() {
+                        boolean done = false;
+                    };
+                    Thread sendingThread = new Thread(() -> {
+                        String inputCommand;
+                        while (inputScanner.hasNext()) {
+                            inputCommand = inputScanner.nextLine();
+                            if (inputCommand != null) {
                                 try {
-                                    Thread.sleep((long) (Math.random() * 1000));
-                                } catch (InterruptedException iExc) {
-                                    System.err.println(iExc);
-                                    System.exit(1);
+                                    Thread.sleep(poisson(meanDelay));
+                                    out.println(inputCommand);
+                                } catch (InterruptedException e){
+                                    System.err.println(e.getMessage());
+                                }
+                            }
+                        }
+                        synchronized (ref) {
+                            ref.done = true;
+                        }
+                    });
+
+                    Thread receivingThread = new Thread(() -> {
+                        try {
+                            String fromServer;
+                            while ((fromServer = in.readLine()) != null) {
+                                System.out.println("Server: " + fromServer);
+                                synchronized (ref) {
+                                    if (ref.done) {
+                                        break;
+                                    }
                                 }
                             }
                         } catch (IOException e) {
-                            System.err.println(e);
+                            System.err.println(e.getMessage());
                             System.exit(1);
                         }
 
-                    }
-                }).start();
+                    });
+                    sendingThread.start();
+                    receivingThread.start();
+                    sendingThread.join();
+                    receivingThread.join();
 
-                // handle server's responses
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try (
-                            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                        ){
-                            // read and print server's response
-                            String fromServer;
-                            while ((fromServer = in.readLine()) != null){
-                                System.out.println(fromServer);
-                            }
-                        } catch (IOException e) {
-                            System.err.println("Couldn't get I/O for the connection to " + hostName);
-                            System.exit(1);
-                        }
-                    }
-                }).start();
-            } catch (UnknownHostException e) {
-                System.err.println("Don't know about host " + hostName);
-                System.exit(1);
-            }
+                } catch (IOException e) {
+                    System.err.println(e.getMessage());
+                    System.exit(1);
+                } catch (InterruptedException e) {
+                    System.err.println(e.getMessage());
+                }
+            });
+
+            threads[i].start();
         }
+        try {
+            for (Thread thread : threads) {
+                thread.join();
+            }
+        } catch (InterruptedException e) {
+            System.err.println(e.getMessage());
+        }
+
+    }
+
+    private static int poisson(double mean) {
+        Random random = new Random();
+        int r = 0;
+        double a = random.nextDouble();
+        double p = Math.exp(-mean);
+
+        while (a > p) {
+            r++;
+            a = a - p;
+            p = p * mean / r;
+        }
+        return r;
     }
 }

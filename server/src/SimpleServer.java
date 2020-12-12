@@ -47,7 +47,7 @@ public class SimpleServer {
 
     private static final int N_THREADS = 2;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         if (args.length != 2) {
             System.err.println("Usage: java SimpleServer <port number> <database text file>");
             System.exit(1);
@@ -59,36 +59,39 @@ public class SimpleServer {
         String[][] dataArray = initArray(dbfile);
 
         ServerSocket serverSocket = new ServerSocket(portNumber);
+        Thread[] threads = new Thread[N_THREADS];
+
         for (int i=0; i < N_THREADS; i++) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (true) {
-                        try (
+            threads[i] = new Thread(() -> {
+                while (true) {
+                    try (
                             Socket clientSocket = serverSocket.accept();
                             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-                            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                        ) {
-                            String inputLine, outputLine;
+                            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))
+                    ) {
+                        String inputLine, outputLine;
 
-                            // Initiate conversation with client
-                            SimpleServerProtocol ssp = new SimpleServerProtocol(dataArray);
+                        // Initiate conversation with client
+                        SimpleServer.SimpleServerProtocol ssp = new SimpleServer.SimpleServerProtocol(dataArray);
 
-                            while ((inputLine = in.readLine()) != null) {
-                                outputLine = ssp.processInput(inputLine);
-                                out.println(outputLine);
-                                if (outputLine.equals("Bye."))
-                                    break;
-                            }
-                        } catch (IOException e) {
-                            System.out.println("Exception caught when trying to listen on port "
-                                    + portNumber + " or listening for a connection");
-                            System.out.println(e.getMessage());
+                        while ((inputLine = in.readLine()) != null) {
+                            outputLine = ssp.processInput(inputLine);
+                            out.println(outputLine);
                         }
+                    } catch (IOException e) {
+                        System.out.println("Exception caught when trying to listen on port "
+                                + portNumber + " or listening for a connection");
+                        System.err.println(e.getMessage());
                     }
                 }
-            }).start();
+            });
+            threads[i].start();
         }
+
+        for (int i = 0; i < N_THREADS; i++) {
+            threads[i].join();
+        }
+
     }
 
     public static String[][] initArray(String filename) {
@@ -113,7 +116,7 @@ public class SimpleServer {
     }
 
     public static class SimpleServerProtocol {
-        private String[][] dataArray;
+        private final String[][] dataArray;
 
         public SimpleServerProtocol(String[][] dataArray) {
             this.dataArray = dataArray;

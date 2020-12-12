@@ -37,7 +37,6 @@
 
 import java.io.*;
 import java.net.*;
-import java.util.Iterator;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -53,12 +52,15 @@ public class Clients {
         String hostName = args[0];
         int portNumber = Integer.parseInt(args[1]);
         int numberOfClients = Integer.parseInt(args[2]);
-        float meanDelay = Float.parseFloat(args[3]);
         String inputFilename = args[3];
+        float meanDelay = Float.parseFloat(args[4]);
+
 
         Thread[] threads = new Thread[numberOfClients];
 
         for (int i = 0; i<numberOfClients; i++){
+            final int idx = i;
+
             // handle sending to server
             threads[i] = new Thread(() -> {
                 try (
@@ -109,6 +111,7 @@ public class Clients {
                     receivingThread.start();
                     sendingThread.join();
                     receivingThread.join();
+                    System.out.println("Client "+idx+" finished");
 
                 } catch (IOException e) {
                     System.err.println(e.getMessage());

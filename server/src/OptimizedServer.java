@@ -57,9 +57,10 @@ public class OptimizedServer {
         String[][] dataArray = initArray(dbfile);
         ServerSocket serverSocket = new ServerSocket(portNumber);
 
-        Thread[] threads = new Thread[N_THREADS];
+        System.out.println("Server is up");
 
         // Initializing worker threads
+        Thread[] threads = new Thread[N_THREADS];
         for (int i=0; i < N_THREADS; i++) {
             threads[i] = new Thread(() -> {
                 while (true) {
@@ -158,7 +159,7 @@ public class OptimizedServer {
             Pattern pattern = Pattern.compile(regex);
 
             int[] intTypes;
-            if (types.length == 0) {
+            if (types.length == 1 && types[0].equals("")) {
                 // If no types we search them all
                 intTypes = new int[]{0, 1, 2, 3, 4, 5};
             } else {
@@ -177,9 +178,9 @@ public class OptimizedServer {
                     String[][] dataArray = OptimizedServerProtocol.this.dataArray;
                     StringBuilder stringBuilder = new StringBuilder();
                     for (int j = 0; j < dataArray[intTypes[idx]].length; j++) {
-                        Matcher matcher = pattern.matcher(dataArray[idx][j]);
+                        Matcher matcher = pattern.matcher(dataArray[intTypes[idx]][j]);
                         if (matcher.find()) {
-                            stringBuilder.append(idx).append("@@@").append(dataArray[idx][j]).append("\n");
+                            stringBuilder.append(idx).append("@@@").append(dataArray[intTypes[idx]][j]).append("\n");
                         }
                     }
                     if (stringBuilder.length() > 0) {
@@ -201,7 +202,7 @@ public class OptimizedServer {
             if (toSend.length() > 0)
                 response = toSend.toString();
             else
-                response = "\n";
+                response = "";
 
             // The item was not in cache so it is added
             this.cache.add(command, response);

@@ -95,9 +95,11 @@ public class Clients {
                             String fromServer;
                             while ((fromServer = in.readLine()) != null) {
                                 System.out.println("Server: " + fromServer);
-                                synchronized (ref) {
-                                    if (ref.done) {
-                                        break;
+                                if (fromServer.equals("\n")) {
+                                    synchronized (ref) {
+                                        if (ref.done) {
+                                            break;
+                                        }
                                     }
                                 }
                             }
@@ -131,19 +133,5 @@ public class Clients {
             System.err.println(e.getMessage());
         }
 
-    }
-
-    private static int poisson(double mean) {
-        Random random = new Random();
-        int r = 0;
-        double a = random.nextDouble();
-        double p = Math.exp(-mean);
-
-        while (a > p) {
-            r++;
-            a = a - p;
-            p = p * mean / r;
-        }
-        return r;
     }
 }

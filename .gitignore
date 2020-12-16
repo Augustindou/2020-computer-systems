@@ -10,3 +10,4 @@ client/httpRequests/
 
 # Server database
 server/assets/dbdata.txt
+*.idea*

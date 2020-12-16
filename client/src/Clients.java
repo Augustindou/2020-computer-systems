@@ -41,11 +41,10 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Clients {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         // parse args
         if (args.length != 5) {
-            System.err.println(
-                    "Usage: java Clients <host name> <port number> <number of clients> <input file> <mean delay>");
+            System.err.println("Usage: java Clients <host name> <port number> <number of clients> <input file> <mean delay>");
             System.exit(1);
         }
 
@@ -132,6 +131,19 @@ public class Clients {
         } catch (InterruptedException e) {
             System.err.println(e.getMessage());
         }
+    }
 
+
+    public static int poisson(double lambda) {
+        double L = Math.exp(-lambda);
+        double p = 1.0;
+        int k = 0;
+
+        do {
+            k++;
+            p *= Math.random();
+        } while (p > L);
+
+        return k - 1;
     }
 }

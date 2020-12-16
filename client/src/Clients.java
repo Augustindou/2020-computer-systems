@@ -37,6 +37,8 @@
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -68,45 +70,37 @@ public class Clients {
                         final BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                         final Scanner inputScanner = new Scanner(new File(inputFilename));
                 ) {
-                    final var ref = new Object() {
-                        boolean done = false;
-                    };
+                    List<String> requests = new ArrayList<>();
+                    String line;
+                    while (inputScanner.hasNext()) {
+                        if ((line = inputScanner.nextLine()) != null)
+                            requests.add(line);
+                    }
+                    int totalRequests = requests.size();
                     Thread sendingThread = new Thread(() -> {
-                        String inputCommand;
-                        while (inputScanner.hasNext()) {
-                            inputCommand = inputScanner.nextLine();
-                            if (inputCommand != null) {
-                                try {
-                                    Thread.sleep(poisson(meanDelay));
-                                    out.println(inputCommand);
-                                } catch (InterruptedException e){
-                                    System.err.println(e.getMessage());
-                                }
+                        for (String r : requests){
+                            try {
+                                Thread.sleep(poisson(meanDelay));
+                                out.println(r);
+                            } catch (InterruptedException e){
+                                System.err.println(e.getMessage());
                             }
-                        }
-                        synchronized (ref) {
-                            ref.done = true;
                         }
                     });
 
                     Thread receivingThread = new Thread(() -> {
+                        int count = 0;
                         try {
                             String fromServer;
-                            while ((fromServer = in.readLine()) != null) {
+                            while ((count < totalRequests) && ((fromServer = in.readLine()) != null)) {
                                 System.out.println("Server: " + fromServer);
-                                if (fromServer.equals("\n")) {
-                                    synchronized (ref) {
-                                        if (ref.done) {
-                                            break;
-                                        }
-                                    }
-                                }
+                                if (fromServer.equals(""))
+                                    count++;
                             }
                         } catch (IOException e) {
                             System.err.println(e.getMessage());
                             System.exit(1);
                         }
-
                     });
                     sendingThread.start();
                     receivingThread.start();

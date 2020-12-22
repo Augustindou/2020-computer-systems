@@ -45,8 +45,8 @@ import java.util.Scanner;
 public class Clients {
     public static void main(String[] args) {
         // parse args
-        if (args.length != 5) {
-            System.err.println("Usage: java Clients <host name> <port number> <number of clients> <input file> <mean delay>");
+        if (args.length != 6) {
+            System.err.println("Usage: java Clients <host name> <port number> <number of clients> <input file> <mean delay> <verbose>");
             System.exit(1);
         }
 
@@ -55,6 +55,7 @@ public class Clients {
         int numberOfClients = Integer.parseInt(args[2]);
         String inputFilename = args[3];
         float meanDelay = Float.parseFloat(args[4]);
+        boolean verbose = Boolean.parseBoolean(args[5]);
 
 
         Thread[] threads = new Thread[numberOfClients];
@@ -93,7 +94,9 @@ public class Clients {
                         try {
                             String fromServer;
                             while ((count < totalRequests) && ((fromServer = in.readLine()) != null)) {
-                                System.out.println("Server: " + fromServer);
+                                if (verbose) {
+                                    System.out.println("Server: " + fromServer);
+                                }
                                 if (fromServer.equals(""))
                                     count++;
                             }

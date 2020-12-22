@@ -36,6 +36,10 @@
  *      SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import utils.Buffer;
+import utils.Request;
+import utils.Cache;
+
 import java.net.*;
 import java.io.*;
 import java.util.*;
@@ -54,47 +58,64 @@ public class OptimizedServer {
         String dbfile = args[1];
         final int N_THREADS = Integer.parseInt(args[2]);
 
-        String[][] dataArray = initArray(dbfile);
         ServerSocket serverSocket = new ServerSocket(portNumber);
+        Buffer<Request> buffer = new Buffer<>(100);
+        OptimizedServerProtocol osp = new OptimizedServerProtocol(initArray(dbfile), 10, 5);
 
         System.out.println("Server is up");
+
+        Socket clientSocket = serverSocket.accept();
+        ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
+        ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 
         // Initializing worker threads
         Thread[] threads = new Thread[N_THREADS];
         for (int i=0; i < N_THREADS; i++) {
             threads[i] = new Thread(() -> {
-                while (true) {
-                    try (
-                            Socket clientSocket = serverSocket.accept();
-                            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-                            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))
-                    ) {
-                        String inputLine, outputLine;
-
-                        // Initiate conversation with client
-                        OptimizedServerProtocol osp = new OptimizedServerProtocol(dataArray, 100, 5);
-
-                        while ((inputLine = in.readLine()) != null) {
-                            outputLine = osp.processInput(inputLine);
-                            out.println(outputLine);
+                try {
+                    Request r;
+                    while ((r = buffer.take()) != null) {
+                        r.setFinishedQueuingTime(new Date());
+                        r.setStartingToTreatRequestTime(new Date());
+                        String outputLine = osp.processInput(r.getRequestValue());
+                        r.setFinishedTreatingRequestTime(new Date());
+                        r.setResponseValue(outputLine);
+                        synchronized (out) {
+                            out.writeObject(r);
+                            out.flush();
                         }
-                    } catch (IOException e) {
-                        System.out.println("Exception caught when trying to listen on port "
-                                + portNumber + " or listening for a connection");
-                        System.err.println(e.getMessage());
-                    } catch (InterruptedException e) {
-                        System.err.println(e.getMessage());
                     }
+                } catch (InterruptedException | IOException e) {
+                    System.err.println(e.getMessage());
                 }
             });
             // starting the threads right away
             threads[i].start();
         }
 
+        // Loop to fill buffer
+        try {
+            Request received;
+            while ((received = (Request) in.readObject()) != null) {
+                received.setStartingQueuingTime(new Date());
+                if (!buffer.add(received)) System.err.println("Full buffer, had to drop a request");
+            }
+        } catch (ClassNotFoundException e) {
+            System.err.println("Wrong object format");
+        } catch (EOFException e) {
+            // When the final object is read, the buffer throws and EOF exception.
+        }
+
         // Waiting for the threads to finish to return
         for (int i = 0; i < N_THREADS; i++) {
             threads[i].join();
         }
+
+        in.close();
+        out.close();
+        serverSocket.close();
+        clientSocket.close();
+
     }
 
     public static String[][] initArray(String filename) {
@@ -207,72 +228,6 @@ public class OptimizedServer {
             // The item was not in cache so it is added
             this.cache.add(command, response);
             return response;
-        }
-    }
-
-    public static class Cache {
-        private final int N;
-        private final float theta;
-        private final Map<String, CacheEntry> map;
-
-        public Cache(int N, float theta) {
-            this.N = N;
-            this.theta = theta;
-            this.map = new HashMap<>();
-        }
-
-        public void add(String request, String response) {
-            if (map.size() >= this.N) {
-                // getting frequency total and getting lowest frequency key
-                int totalFreq = 0;
-                int minFreq = Integer.MAX_VALUE;
-                String toDel = null;
-                for (Map.Entry<String, CacheEntry> entry  : map.entrySet()) {
-                    totalFreq += entry.getValue().freq;
-                    if (entry.getValue().freq < minFreq) {
-                        toDel = entry.getKey();
-                    }
-                }
-
-                // reducing frequency if threshold is crossed
-                if (totalFreq/(float) map.size() > this.theta) {
-                    for (CacheEntry ce : map.values()) {
-                        ce.freq /= 2;
-                    }
-                }
-
-                // Removing the lowest frequency item
-                synchronized (map) {
-                    map.remove(toDel);
-                }
-            }
-
-            // Adding the new element
-            synchronized (map) {
-                map.put(request, new CacheEntry(response, 1));
-            }
-        }
-
-        // Returns the response to the request if the object is in cache, null otherwise
-        public String get(String request) {
-            if (map.containsKey(request)) {
-                CacheEntry ce = map.get(request);
-                ce.freq += 1;
-                return ce.response;
-            } else {
-                return null;
-            }
-        }
-    }
-
-    // Object we are storing in the cache (contains the response and the frequency)
-    public static class CacheEntry {
-        public String response;
-        public int freq;
-
-        public CacheEntry(String response, int freq) {
-            this.response = response;
-            this.freq = freq;
         }
     }
 }

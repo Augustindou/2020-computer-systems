@@ -10,4 +10,10 @@ client/httpRequests/
 
 # Server database
 server/assets/dbdata.txt
+
+# intelliJ files
 *.idea*
+*.iml
+*.class
+*/out/*
+

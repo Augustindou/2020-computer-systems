@@ -123,7 +123,7 @@ public class OptimizedServer {
             File file = new File(filename);
 
             Scanner reader = new Scanner(file);
-            Map<Integer, List<String>> map = new HashMap<>();
+            Map<Integer, Set<String>> map = new HashMap<>();
 
             // Parsing file and adding it to hashmap with category as key
             String[] data;
@@ -131,7 +131,7 @@ public class OptimizedServer {
                 data = reader.nextLine().split("@@@");
                 int idx = Integer.parseInt(data[0]);
                 if (!map.containsKey(idx)) {
-                    map.put(idx, new ArrayList<>());
+                    map.put(idx, new HashSet<>());
                 }
                 map.get(idx).add(data[1]);
             }
@@ -139,7 +139,7 @@ public class OptimizedServer {
 
             // Transforming the hashmap in a 2D array
             String[][] dataArray = new String[map.size()][];
-            for (Map.Entry<Integer, List<String>> e : map.entrySet()) {
+            for (Map.Entry<Integer, Set<String>> e : map.entrySet()) {
                 dataArray[e.getKey()] = e.getValue().toArray(new String[0]);
             }
             return dataArray;
@@ -192,36 +192,21 @@ public class OptimizedServer {
 
             // Search in each type are independent, it can be done in concurrent threads
             Thread[] threads = new Thread[intTypes.length];
-            StringBuilder[] threadReturn = new StringBuilder[intTypes.length];
-            for (int i = 0; i < threads.length; i++) {
-                final int idx = i;
-                threads[i] = new Thread(() -> {
-                    String[][] dataArray = OptimizedServerProtocol.this.dataArray;
-                    StringBuilder stringBuilder = new StringBuilder();
-                    for (int j = 0; j < dataArray[intTypes[idx]].length; j++) {
-                        Matcher matcher = pattern.matcher(dataArray[intTypes[idx]][j]);
-                        if (matcher.find()) {
-                            stringBuilder.append(idx).append("@@@").append(dataArray[intTypes[idx]][j]).append("\n");
-                        }
+            StringBuilder builder = new StringBuilder();
+            for (int idx : intTypes) {
+                String[][] dataArray = OptimizedServerProtocol.this.dataArray;
+                StringBuilder stringBuilder = new StringBuilder();
+                for (int j = 0; j < dataArray[idx].length; j++) {
+                    Matcher matcher = pattern.matcher(dataArray[idx][j]);
+                    if (matcher.find()) {
+                        builder.append(idx).append("@@@").append(dataArray[idx][j]).append("\n");
                     }
-                    if (stringBuilder.length() > 0) {
-                        threadReturn[idx] = stringBuilder;
-                    }
-                });
-                threads[i].start();
-            }
-
-            // Waiting for threads to finish and joining responses
-            StringBuilder toSend = new StringBuilder();
-            for (int i = 0; i<threads.length; i++) {
-                threads[i].join();
-                if (threadReturn[i] != null)
-                    toSend.append(threadReturn[i]);
+                }
             }
 
             String response;
-            if (toSend.length() > 0)
-                response = toSend.toString();
+            if (builder.length() > 0)
+                response = builder.toString();
             else
                 response = "";
 

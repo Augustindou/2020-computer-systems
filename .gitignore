@@ -9,7 +9,7 @@ client/dataSources.local.xml
 client/httpRequests/
 
 # Server database
-server/assets/dbdata.txt
+*/dbdata.txt
 
 # intelliJ files
 *.idea*

@@ -36,61 +36,91 @@
  *      SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import utils.Buffer;
+import utils.Request;
+
 import java.net.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SimpleServer {
 
-    private static final int N_THREADS = 2;
-
     public static void main(String[] args) throws IOException, InterruptedException {
-        if (args.length != 2) {
-            System.err.println("Usage: java SimpleServer <port number> <database text file>");
+        if (args.length != 3) {
+            System.err.println("Usage: java SimpleServer <port number> <database text file> <number of threads>");
             System.exit(1);
         }
 
         int portNumber = Integer.parseInt(args[0]);
         String dbfile = args[1];
-
-        String[][] dataArray = initArray(dbfile);
+        int N_THREADS = Integer.parseInt(args[2]);
 
         ServerSocket serverSocket = new ServerSocket(portNumber);
-        Thread[] threads = new Thread[N_THREADS];
+        Buffer<Request> buffer = new Buffer<>(2000);
+        SimpleServer.SimpleServerProtocol ssp = new SimpleServer.SimpleServerProtocol(initArray(dbfile));
 
+        System.out.println("Server is up");
+
+        Socket clientSocket = serverSocket.accept();
+        ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
+        ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
+
+        // Initializing worker threads
+        Thread[] threads = new Thread[N_THREADS];
         for (int i=0; i < N_THREADS; i++) {
             threads[i] = new Thread(() -> {
-                while (true) {
-                    try (
-                            Socket clientSocket = serverSocket.accept();
-                            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-                            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))
-                    ) {
-                        String inputLine, outputLine;
-
-                        // Initiate conversation with client
-                        SimpleServer.SimpleServerProtocol ssp = new SimpleServer.SimpleServerProtocol(dataArray);
-
-                        while ((inputLine = in.readLine()) != null) {
-                            outputLine = ssp.processInput(inputLine);
-                            out.println(outputLine);
+                try {
+                    Request r;
+                    while ((r = buffer.take()) != null) {
+                        if (r.getClientID() == -1) break;
+                        r.setFinishedQueuingTime(new Date());
+                        r.setStartingToTreatRequestTime(new Date());
+                        String outputLine = ssp.processInput(r.getRequestValue());
+                        r.setFinishedTreatingRequestTime(new Date());
+                        r.setResponseValue(outputLine);
+                        synchronized (out) {
+                            out.writeObject(r);
+                            out.flush();
                         }
-                    } catch (IOException e) {
-                        System.out.println("Exception caught when trying to listen on port "
-                                + portNumber + " or listening for a connection");
-                        System.err.println(e.getMessage());
                     }
+                } catch (InterruptedException | IOException e) {
+                    System.err.println(e.getMessage());
                 }
             });
+            // starting the threads right away
             threads[i].start();
         }
 
+
+        // Loop to fill buffer
+        try {
+            Request received;
+            while ((received = (Request) in.readObject()) != null) {
+                received.setStartingQueuingTime(new Date());
+                if (!buffer.add(received)) System.err.println("Full buffer, had to drop a request");
+            }
+        } catch (ClassNotFoundException e) {
+            System.err.println("Wrong object format");
+        } catch (EOFException e) {
+            // When the final object is read, the buffer throws and EOF exception.
+            for (int i = 0; i < N_THREADS; i++) {
+                if (!buffer.add(new Request("Done", -1))) System.err.println("Could not stop a thread");
+            }
+        }
+
+        // Waiting for the threads to finish to return
         for (int i = 0; i < N_THREADS; i++) {
             threads[i].join();
         }
+
+        in.close();
+        out.close();
+        serverSocket.close();
+        clientSocket.close();
 
     }
 
@@ -124,7 +154,7 @@ public class SimpleServer {
 
         public String processInput(String command) {
             if (command != null) {
-                String[] data = command.split(";");
+                String[] data = command.split(";", 2);
                 if (data.length != 2) {
                     System.err.println("Wrong command format.");
                     return null;

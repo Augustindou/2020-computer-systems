@@ -45,6 +45,7 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class OptimizedServer {
 
@@ -59,7 +60,7 @@ public class OptimizedServer {
         final int N_THREADS = Integer.parseInt(args[2]);
 
         ServerSocket serverSocket = new ServerSocket(portNumber);
-        Buffer<Request> buffer = new Buffer<>(100);
+        Buffer<Request> buffer = new Buffer<>(2000);
         OptimizedServerProtocol osp = new OptimizedServerProtocol(initArray(dbfile), 10, 5);
 
         System.out.println("Server is up");
@@ -75,6 +76,7 @@ public class OptimizedServer {
                 try {
                     Request r;
                     while ((r = buffer.take()) != null) {
+                        if (r.getClientID() == -1) break;
                         r.setFinishedQueuingTime(new Date());
                         r.setStartingToTreatRequestTime(new Date());
                         String outputLine = osp.processInput(r.getRequestValue());
@@ -93,6 +95,7 @@ public class OptimizedServer {
             threads[i].start();
         }
 
+
         // Loop to fill buffer
         try {
             Request received;
@@ -104,6 +107,9 @@ public class OptimizedServer {
             System.err.println("Wrong object format");
         } catch (EOFException e) {
             // When the final object is read, the buffer throws and EOF exception.
+            for (int i = 0; i < N_THREADS; i++) {
+                if (!buffer.add(new Request("Done", -1))) System.err.println("Could not stop a thread");
+            }
         }
 
         // Waiting for the threads to finish to return
@@ -118,7 +124,7 @@ public class OptimizedServer {
 
     }
 
-    public static String[][] initArray(String filename) {
+    public static Map<Integer, Set<String>> initArray(String filename) {
         try {
             File file = new File(filename);
 
@@ -136,13 +142,7 @@ public class OptimizedServer {
                 map.get(idx).add(data[1]);
             }
             reader.close();
-
-            // Transforming the hashmap in a 2D array
-            String[][] dataArray = new String[map.size()][];
-            for (Map.Entry<Integer, Set<String>> e : map.entrySet()) {
-                dataArray[e.getKey()] = e.getValue().toArray(new String[0]);
-            }
-            return dataArray;
+            return map;
         } catch (FileNotFoundException e) {
             System.err.println("No such file");
             return null;
@@ -150,11 +150,11 @@ public class OptimizedServer {
     }
 
     public static class OptimizedServerProtocol {
-        private final String[][] dataArray;
+        private final Map<Integer, Set<String>> dataMap;
         private final Cache cache;
 
-        public OptimizedServerProtocol(String[][] dataArray, int N, float theta) {
-            this.dataArray = dataArray;
+        public OptimizedServerProtocol(Map<Integer, Set<String>> dataMap, int N, float theta) {
+            this.dataMap = dataMap;
             this.cache = new Cache(N, theta);
         }
 
@@ -162,7 +162,7 @@ public class OptimizedServer {
             if (command == null)
                 return null;
 
-            String[] data = command.split(";");
+            String[] data = command.split(";", 2);
             if (data.length != 2) {
                 System.err.println("Wrong command format.");
                 return null;
@@ -191,17 +191,12 @@ public class OptimizedServer {
             }
 
             // Search in each type are independent, it can be done in concurrent threads
-            Thread[] threads = new Thread[intTypes.length];
             StringBuilder builder = new StringBuilder();
+            Map<Integer, Set<String>> map = OptimizedServerProtocol.this.dataMap;
             for (int idx : intTypes) {
-                String[][] dataArray = OptimizedServerProtocol.this.dataArray;
-                StringBuilder stringBuilder = new StringBuilder();
-                for (int j = 0; j < dataArray[idx].length; j++) {
-                    Matcher matcher = pattern.matcher(dataArray[idx][j]);
-                    if (matcher.find()) {
-                        builder.append(idx).append("@@@").append(dataArray[idx][j]).append("\n");
-                    }
-                }
+                String matches = idx+"@@@"+map.get(idx).stream().filter(pattern.asPredicate()).collect(Collectors.joining("\n"+idx+"@@@"));
+                matches = matches.substring(0, matches.length()-(idx+"@@@").length());
+                builder.append(matches);
             }
 
             String response;

@@ -14,12 +14,13 @@ public class Cache {
         this.map = new HashMap<>();
     }
 
-    public void add(String request, String response) {
+    public synchronized void add(String request, String response) {
         if (map.size() >= this.N) {
             // getting frequency total and getting lowest frequency key
             int totalFreq = 0;
             int minFreq = Integer.MAX_VALUE;
             String toDel = null;
+
             for (Map.Entry<String, CacheEntry> entry  : map.entrySet()) {
                 totalFreq += entry.getValue().freq;
                 if (entry.getValue().freq < minFreq) {
@@ -35,15 +36,11 @@ public class Cache {
             }
 
             // Removing the lowest frequency item
-            synchronized (map) {
-                map.remove(toDel);
-            }
+            map.remove(toDel);
         }
 
         // Adding the new element
-        synchronized (map) {
-            map.put(request, new CacheEntry(response, 1));
-        }
+        map.put(request, new CacheEntry(response, 1));
     }
 
     // Returns the response to the request if the object is in cache, null otherwise

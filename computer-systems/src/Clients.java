@@ -83,8 +83,8 @@ public class Clients {
                         Thread sendingThread = new Thread(() -> {
                             List<String> requestsForThread = new ArrayList<>(requests);
                             Collections.shuffle(requestsForThread);
-                            int toDrop = rand.nextInt(requestsForThread.size());
-                            requestsForThread.subList(toDrop, requestsForThread.size()).clear();
+                            //int toDrop = rand.nextInt(requestsForThread.size());
+                            //requestsForThread.subList(toDrop, requestsForThread.size()).clear();
                             synchronized (requestsPerClient) {
                                 requestsPerClient[idx] = requestsForThread.size();
                             }
@@ -124,7 +124,8 @@ public class Clients {
                         fromServer.setReceivedByClientTime(new Date());
                         logResponse(fromServer, resultsList);
                         if (verbose) {
-                            System.out.println("Received Server Response : \n" + fromServer.getResponseValue());
+                            System.out.println("Received Server Response of length : " + fromServer.getResponseValue().split("\n").length);
+                            // System.out.println("Received Server Response : \n" + fromServer.getResponseValue());
                         }
                         counts[fromServer.getClientID()]++;
                         synchronized (requestsPerClient) {

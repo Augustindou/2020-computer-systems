@@ -1,100 +1,100 @@
-1,0,3;ons comme le prvoit la Charte des droits et traitons tout le monde sur un pied d'ga
-5;'ai t lu au Parlement en
-2;lefon nat'l: 0
-3;ants paient un
-4,1;re soit lu par des dputs connaissant exactement ses convictions
-2,1;tion de tous les dputs
-4,2,0,5,3;re que la coopration entre la direct
-3;ministre de l'intgrit et de la clairvoyance dont elle a fait
-0,2,4; Leon E Benoit Lakelan
-5,1;extra cond
-1;et abordable quand il y
-0;as gone to committee
-1,5;@uiucdcsp>
-3,4,1;r David Prat
-1;eople call and call, but the line is
-5,4;oard and recognize that t
-2,5;look at what the Government of Canada has done
-3;gouvernement fdral est respo
-3;question sous un autre angle
-2;omme nous, du Bloc, et comme nos collgues du
-0,1;e avec un message venant
-4;e state, so that you don't need t
-0;is en 1997 par M Jean Charest, soit des normes nationales visant  valuer les tudiants et  valuer les coles, et ce,
-2;I cannot comprehend why
-2,4;cette terrible tragdie, i
-4,3;endre au srieux les Can
-4,1;arently, AmigaDOS supports larger blocksizes Ju
-1,2;st six years we have been in opposition
-2;n in the province of Quebec via the Canada-Quebec infrastructure
-3,2;venu d'interdire les mines terrestres antipersonne
-1,3;Dec 87 12:4
-0,5;la fin de cette priode, aucun amendement n'a t prsent, on devrait considrer que le projet de loi a t renvoy sans amendement
-2,5;ravail contiennent habituellement
-5;s of troops covered You can fight outside Europe
-0;r the banks to feel comfortable with in the normal scheme of lending
-5;istrative dont nous sommes saisis confirme le fait q
-2,4,3;ed it and I support the bill
-0,2;ster and accountable through
-2;ersvr plus longtemps dans leurs tudes
-3,2;eginning of the game after you'
-2;Dans son article,
-3,2;r Science Dept, New Haven CT
-1;o anonymous FTP! Why have these simple tests
-0;h one committed to this film is a cinematic stunner , especially when compared
-5;ue le choix ef
-4,1;Le rapport incomplet qui a t prsent se composait de cinq volu
-1,5,0;xHPCOM> markc@hp
-2,0,4;it wrong, as usual
-0,4,5;will be submitted to the minister and
-0;n continue  vouloir expdier des paiements de transfert dans les rgions, mais de garder les dpense
-2,1;ut pas encourager
-3; member that I was the one, as the minister of justice, who worked for months with attorneys general and the House of C
-2,1;answer the call from
-4;artie moins mercantile de la fonction de juge, bien qu'importante, n'a pas t analyse par le tribunal, et on se limitera naturellement  la p
-3;s aborder la question des rapports de comit dposs
-1,2;hat he was doing whil
-0,1,5;y avait de
-2,1;eaucoup de trs bonnes ra
-4,0;'en suis tr
-5;a question s'adresse  la ministre de l'Environnement
-3,0;l vous plat
-2,1,4;ore the above email address and use my signa
-3,0;couk Jeremy G
-3,2;n d'une loterie, est particuli
-3;all white"
-0,5,4,1,2;s, j'attends avec impatience une rponse qui
-1; Ted White North Vancouver
-0,5;n 7456 establishes an extremely rigorous procedure, and those who apply are very rarely successful
-0;M McClelland
-5,2,3;ps where we do not want to go
-4,2;tudier de faon re
-4;tant dveloppement qui vient de survenir dans l'histoi
-1;ys engags aprs une date donne ne bnficient pas des mmes avantages salariaux ou sociaux, ou des mmes co
-3,0,5;uld go broke
-0,4;Richard M Harris Prince George-Bulkley Valley, Rf:
-5;here can be done by grepping in the /dirfile
-1,3;ich a friend of mine had some time ago
-2,3;ports the inclusion cl
-0,5;ns de principe, que nou
-1,5;987 by sl131008@silverUUCP in silver:recartss
-4,1,0;re advanced
-4;ltra vires of t
-0;nbsp ; the x-files is noteworthy for being the only movie based on a television series to be produced while the series was still running
-0;L'annexe 3 est adopte
-3;: 9 Dec 87 20:05:2
-3;re d'tat Multiculturalisme
-2;de l'AFPC ont travaill d'arrache-pied et ont
-1;et deux au prima
-5,0,1;abolition de la provo
-3,4;Mr Michel Bellehumeur
-0,4,5,2;comit n'est
-5;Hon John Manley
-3;ll edges ar
-0;e: NCC, USS, Klingons, etc
-0;but I haven't tr
-2;it en pleine face des gens
-2;dy of people accountable to no one to tell us what we
-5,3,2,0,1;compsysdec
-4,1,5,0;ble situation
-5,1;par la BC Transit
+3,1;^	return;$
+3,0;^information about it and the problems with the Ozone layer in$
+3,1;^>$
+5,3;^the C compiler, and look at the size of that beast!!$
+0,5;^QUESTIONS ORALES $
+3,1;^Y a-t-il consentement unanime?  $
+4,2;^Why does he not just do that?  $
+0,3;^--------------------------------------------------------------------------------$
+4,0;^If Canada or British Columbia enters into a treaty or a land claims agreement, within the meaning of sections 25 and 35 of the Constitution Act, 1982, with another aboriginal people, and that treaty or land claims agreement adversely affects Nisga'a section 35 rights as set out in this Agreement: $
+0,2;^			Jacob Baekke, Denmark$
+0,1;^Is that what 50% plus one means?  $
+3,4;^Organization: LFCS, University of Edinburgh$
+3,2;^Les employs viss pourront-ils soumissionner selon des rgles quitables pour l'obtention de ces postes? $
+0,5;^Qu'on modifie la motion en retranchant tous les mots suivant le mot Que et en les remplaant par ce qui suit: $
+3,1;^LA BRAVOURE $
+5,3;^		Strandvejen 19$
+1,2;^LA PRIODE DES QUESTIONS ORALES $
+5,0;^>append some extra conditions:$
+0,4;^Deep Purple and Marillion and good example of extremes in both$
+0,1;^When a problem arises, who pays up? $
+0,2;^L'Accord multilatral sur l'investissement $
+5,4;^Le gouvernement est-il d'avis qu'il convient de protger les femmes non autochtones dans la charte des droits et liberts, mais que les femmes autochtones doivent lutter pour leurs droits, comme l'affirme la secrtaire d'tat charge du Multiculturalisme et de la Situation de la femme?  $
+5,0;^Pourquoi? $
+1,3;^Mme Diane Ablonczy $
+3,5;^Comment voulez-vous que le travail soit fait convenablement? $
+0,2;^NIL $
+0,1;^Lines: 14$
+0,1;^Mme Jocelyne Girard-Bujold $
+3,2;^Mme Bev Desjarlais $
+3,5;^Devant nos partenaires commerciaux, pourquoi le gouvernement ne fait-il pas preuve de la mme dtermination impitoyable qu'il a manifeste lorsqu'il a retir son aide financire aux agriculteurs canadiens?  $
+4,3;^>	like to hear from anyone who is trying/has tried similar$
+3,1;^RAILWAY TRANSPORTATION $
+0,4;^Subject: The Spinning watch cursor$
+5,2;^HOUSE OF COMMONS $
+3,0;^#! rnews 1946$
+0,4;^Troisime lecture $
+4,0;^-- $
+5,2;^The Speaker:$
+5,3;^Le vice-prsident:$
+2,0;^Quel a t le rsultat? $
+4,0;^Lines: 12$
+3,0;^ $
+4,3;^Une voix:$
+2,3;^Is that agreed?  $
+0,2;^so low cut that it shows her crevice?  Who is she trying to impress?$
+5,0;^Path: alberta!mnetor!uunet!mcvax!cernvax!ethz!solaris!wyle$
+3,4;^>Does anyone out there know how I can fix this problem?$
+0,5;^CHAD BLUNDON ET LISA ROBICHAUD $
+1,5;^#! rnews 1704$
+5,1;^BILLS OF EXCHANGE ACT $
+1,3;^Subject: Re: Origin of Hithchiker's Guide$
+5,4;^Does that mean they should be treated differently from the rest of us? $
+0,5;^#! rnews 3109$
+1,0;^Le Prsident $
+2,0;^Lines: 38$
+0,3;^Ce gouvernement va-t-il remplir sa promesse faite aux lecteurs canadiens et crer des emplois? $
+3,5;^Date: 10 Dec 87 18:42:09 GMT$
+0,4;^#! rnews 1094$
+1,4;^Des voix:$
+5,1;^Combien de fois ma demande est-elle reste sans cho? $
+2,4;^QUESTIONS ON THE ORDER PAPER $
+1,5;^LES PCHES $
+4,1;^try to stop the movements of the magnet; this will in turn slow down the$
+4,1;^iconList$
+5,2;^Date: 2 Dec 87 18:20:17 GMT$
+5,1;^LE GOUVERNEMENT LIBRAL $
+0,2;^#! rnews 1113$
+2,4;^Date: 8 Dec 87 10:44:50 GMT$
+5,3;^Having observed chat about the American Max series and comparisons with the$
+2,5;^>Also:  Is there a way that I can determine WHICH file descriptor caused$
+2,3;^Le vice-prsident:$
+4,5;^Confiera-t-elle  un juge le soin d'tudier les terribles problmes d'ordre conomique, social et dmocratique qui existent aujourd'hui dans la rserve des Tsuu T'ina?  $
+3,2;^You should add the indicated line in order to set the size of$
+1,5;^La priode des questions $
+5,1;^LA LOI SUR LES DOUANES $
+0,1;^LA SEMAINE NATIONALE DE L'ACTION BNVOLE $
+0,4;^Le Prsident:$
+5,0;^#! rnews 786$
+1,3;^Motion no 29 $
+5,0;^Comment peut-on expliquer que le gouvernement ait refus de faire toute la lumire chaque fois que nous avons formul ces demandes? $
+5,4;^+---------------------------------------------------------------------------+$
+2,3;^				   ///////$
+5,1;^Path: alberta!mnetor!uunet!mcvax!ukc!its63b!simon$
+1,5;^Path: alberta!mnetor!uunet!mcvax!lambert$
+2,5;^Keywords: How to use?$
+5,3;^Mme Carolyn Parrish $
+4,5;^	on UUCP: jarwa@imag$
+3,0;^Organization: University of Southern California, Los Angeles, CA$
+1,0;^Organization: TNO Institute for Perception, Soesterberg, The Netherlands$
+0,5;^Qu'est-ce que cela fait, de vivre sur une autre plante? $
+0,3;^Lines: 22$
+3,0;^I don't know about "commands", but Common Lisp comments are nothing$
+1,5;^LIBERAL PARTY OF CANADA $
+4,0;^Des voix:$
+0,1;^#! rnews 756$
+2,3;^Subject: Re: WARGAMING!$
+0,5;^Mme Diane Ablonczy:$
+2,3;^Comment se fait-il qu'il ait accept la dmission de son ministre de la Dfense, en 1996, parce qu'il avait pos un geste contraire  la dontologie pour une cause humanitaire? $
+1,0;^L'ACCORD MULTILATRAL SUR L'INVESTISSEMENT $
+0,2;^Les jeunes contrevenants $

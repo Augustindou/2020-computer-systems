@@ -61,7 +61,7 @@ public class OptimizedServer {
 
         ServerSocket serverSocket = new ServerSocket(portNumber);
         Buffer<Request> buffer = new Buffer<>(2000);
-        OptimizedServerProtocol osp = new OptimizedServerProtocol(initArray(dbfile), 10, 5);
+        OptimizedServerProtocol osp = new OptimizedServerProtocol(initArray(dbfile), 20, 5);
 
         System.out.println("Server is up");
 

@@ -11,6 +11,9 @@ client/httpRequests/
 # Server database
 */dbdata.txt
 
+# Generated files
+results*.txt
+
 # intelliJ files
 *.idea*
 *.iml

@@ -54,7 +54,6 @@ for t, n, f, d in itertools.product(n_threads, n_clients, input, delays):
     # java OptimizedServer <port number> <database text file> <number of threads> [result text file]
     server = Thread(target = os.system, args = (f"java -cp {exec_path} OptimizedServer {port} {db_file} {t} {server_output_file}",))
     server.start()
-    time.sleep(5)
 
     # client thread
     # java Clients <host name> <port number> <number of clients> <input file> <mean delay> <verbose> [results file]

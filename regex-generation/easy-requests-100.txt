@@ -1,100 +1,100 @@
-3,1;^	return;$
-3,0;^information about it and the problems with the Ozone layer in$
-3,1;^>$
-5,3;^the C compiler, and look at the size of that beast!!$
-0,5;^QUESTIONS ORALES $
-3,1;^Y a-t-il consentement unanime?  $
-4,2;^Why does he not just do that?  $
-0,3;^--------------------------------------------------------------------------------$
-4,0;^If Canada or British Columbia enters into a treaty or a land claims agreement, within the meaning of sections 25 and 35 of the Constitution Act, 1982, with another aboriginal people, and that treaty or land claims agreement adversely affects Nisga'a section 35 rights as set out in this Agreement: $
-0,2;^			Jacob Baekke, Denmark$
-0,1;^Is that what 50% plus one means?  $
-3,4;^Organization: LFCS, University of Edinburgh$
-3,2;^Les employs viss pourront-ils soumissionner selon des rgles quitables pour l'obtention de ces postes? $
-0,5;^Qu'on modifie la motion en retranchant tous les mots suivant le mot Que et en les remplaant par ce qui suit: $
-3,1;^LA BRAVOURE $
-5,3;^		Strandvejen 19$
-1,2;^LA PRIODE DES QUESTIONS ORALES $
-5,0;^>append some extra conditions:$
-0,4;^Deep Purple and Marillion and good example of extremes in both$
-0,1;^When a problem arises, who pays up? $
-0,2;^L'Accord multilatral sur l'investissement $
-5,4;^Le gouvernement est-il d'avis qu'il convient de protger les femmes non autochtones dans la charte des droits et liberts, mais que les femmes autochtones doivent lutter pour leurs droits, comme l'affirme la secrtaire d'tat charge du Multiculturalisme et de la Situation de la femme?  $
-5,0;^Pourquoi? $
-1,3;^Mme Diane Ablonczy $
-3,5;^Comment voulez-vous que le travail soit fait convenablement? $
-0,2;^NIL $
-0,1;^Lines: 14$
-0,1;^Mme Jocelyne Girard-Bujold $
-3,2;^Mme Bev Desjarlais $
-3,5;^Devant nos partenaires commerciaux, pourquoi le gouvernement ne fait-il pas preuve de la mme dtermination impitoyable qu'il a manifeste lorsqu'il a retir son aide financire aux agriculteurs canadiens?  $
-4,3;^>	like to hear from anyone who is trying/has tried similar$
-3,1;^RAILWAY TRANSPORTATION $
-0,4;^Subject: The Spinning watch cursor$
-5,2;^HOUSE OF COMMONS $
-3,0;^#! rnews 1946$
-0,4;^Troisime lecture $
-4,0;^-- $
-5,2;^The Speaker:$
-5,3;^Le vice-prsident:$
-2,0;^Quel a t le rsultat? $
-4,0;^Lines: 12$
-3,0;^ $
-4,3;^Une voix:$
-2,3;^Is that agreed?  $
-0,2;^so low cut that it shows her crevice?  Who is she trying to impress?$
-5,0;^Path: alberta!mnetor!uunet!mcvax!cernvax!ethz!solaris!wyle$
-3,4;^>Does anyone out there know how I can fix this problem?$
-0,5;^CHAD BLUNDON ET LISA ROBICHAUD $
-1,5;^#! rnews 1704$
-5,1;^BILLS OF EXCHANGE ACT $
-1,3;^Subject: Re: Origin of Hithchiker's Guide$
-5,4;^Does that mean they should be treated differently from the rest of us? $
-0,5;^#! rnews 3109$
-1,0;^Le Prsident $
-2,0;^Lines: 38$
-0,3;^Ce gouvernement va-t-il remplir sa promesse faite aux lecteurs canadiens et crer des emplois? $
-3,5;^Date: 10 Dec 87 18:42:09 GMT$
-0,4;^#! rnews 1094$
-1,4;^Des voix:$
-5,1;^Combien de fois ma demande est-elle reste sans cho? $
-2,4;^QUESTIONS ON THE ORDER PAPER $
-1,5;^LES PCHES $
-4,1;^try to stop the movements of the magnet; this will in turn slow down the$
-4,1;^iconList$
-5,2;^Date: 2 Dec 87 18:20:17 GMT$
-5,1;^LE GOUVERNEMENT LIBRAL $
-0,2;^#! rnews 1113$
-2,4;^Date: 8 Dec 87 10:44:50 GMT$
-5,3;^Having observed chat about the American Max series and comparisons with the$
-2,5;^>Also:  Is there a way that I can determine WHICH file descriptor caused$
-2,3;^Le vice-prsident:$
-4,5;^Confiera-t-elle  un juge le soin d'tudier les terribles problmes d'ordre conomique, social et dmocratique qui existent aujourd'hui dans la rserve des Tsuu T'ina?  $
-3,2;^You should add the indicated line in order to set the size of$
-1,5;^La priode des questions $
-5,1;^LA LOI SUR LES DOUANES $
-0,1;^LA SEMAINE NATIONALE DE L'ACTION BNVOLE $
-0,4;^Le Prsident:$
-5,0;^#! rnews 786$
-1,3;^Motion no 29 $
-5,0;^Comment peut-on expliquer que le gouvernement ait refus de faire toute la lumire chaque fois que nous avons formul ces demandes? $
-5,4;^+---------------------------------------------------------------------------+$
-2,3;^				   ///////$
-5,1;^Path: alberta!mnetor!uunet!mcvax!ukc!its63b!simon$
-1,5;^Path: alberta!mnetor!uunet!mcvax!lambert$
-2,5;^Keywords: How to use?$
-5,3;^Mme Carolyn Parrish $
-4,5;^	on UUCP: jarwa@imag$
-3,0;^Organization: University of Southern California, Los Angeles, CA$
-1,0;^Organization: TNO Institute for Perception, Soesterberg, The Netherlands$
-0,5;^Qu'est-ce que cela fait, de vivre sur une autre plante? $
-0,3;^Lines: 22$
-3,0;^I don't know about "commands", but Common Lisp comments are nothing$
-1,5;^LIBERAL PARTY OF CANADA $
-4,0;^Des voix:$
-0,1;^#! rnews 756$
-2,3;^Subject: Re: WARGAMING!$
-0,5;^Mme Diane Ablonczy:$
-2,3;^Comment se fait-il qu'il ait accept la dmission de son ministre de la Dfense, en 1996, parce qu'il avait pos un geste contraire  la dontologie pour une cause humanitaire? $
-1,0;^L'ACCORD MULTILATRAL SUR L'INVESTISSEMENT $
-0,2;^Les jeunes contrevenants $
+3,2;^Why can it not be expanded? $
+5,3;^				ifFalse: $
+3,2;^Why can it not be expanded? $
+3,2;^Why can it not be expanded? $
+4,1;^-- $
+3,2;^Why can it not be expanded? $
+3,2;^Why can it not be expanded? $
+1,0;^Est-ce la premire fois qu'on tente d'imposer une volont aussi forte que cela?  $
+3,2;^Why can it not be expanded? $
+3,2;^Why can it not be expanded? $
+5,4;^Elle crit: $
+3,2;^Why can it not be expanded? $
+3,2;^Why can it not be expanded? $
+0,5;^Doit-on comprendre que, dornavant, c'est toujours  la pice que seront traits les dossiers du Fonds transitoire de cration d'emplois?  $
+3,2;^Why can it not be expanded? $
+2,3;^Organization: Stollmann Gmbh, D 2000 Hamburg 50$
+5,3;^				ifFalse: $
+3,2;^Why can it not be expanded? $
+3,2;^Why can it not be expanded? $
+2,3;^Organization: Stollmann Gmbh, D 2000 Hamburg 50$
+5,2;^LA COLLINE DU PARLEMENT $
+0,1;^RESSOURCES NATURELLES ET OPRATIONS GOUVERNEMENTALES $
+5,3;^Des voix:$
+2,5;^Que le projet de loi C-66,  l'article 38, soit modifi par substitution, aux lignes 17  25, page 22, de ce qui suit: $
+0,2;^LE PROJET DE LOI C-55 $
+3,2;^Why can it not be expanded? $
+3,2;^Why can it not be expanded? $
+3,2;^Why can it not be expanded? $
+4,0;^LES BOURSES DU MILLNAIRE $
+4,0;^data points, so assume that the data has been reduced such that the$
+5,3;^Des voix:$
+3,4;^Devant de tels rsultats, qu'a fait le gouvernement fdral libral depuis son arrive au pouvoir? $
+1,0;^Est-ce la premire fois qu'on tente d'imposer une volont aussi forte que cela?  $
+5,2;^LA COLLINE DU PARLEMENT $
+2,3;^Organization: Stollmann Gmbh, D 2000 Hamburg 50$
+3,2;^Why can it not be expanded? $
+3,2;^Why can it not be expanded? $
+0,4;^Lines: 10$
+0,4;^Lines: 10$
+2,3;^Organization: Stollmann Gmbh, D 2000 Hamburg 50$
+5,1;^I ask the Prime Minister, in the name of economic common sense, in the name of fiscal responsibility, how many millions of dollars does the Canadian business community have to lose before the government will legislate workers back?  $
+5,3;^				ifFalse: $
+4,1;^The Speaker:$
+3,1;^The Deputy Speaker:$
+3,1;^The Deputy Speaker:$
+4,5;^Mme Pauline Picard:$
+2,3;^There is a board you can plug into the backplane that purports to give you$
+3,2;^Why can it not be expanded? $
+1,0;^Est-ce la premire fois qu'on tente d'imposer une volont aussi forte que cela?  $
+3,2;^Why can it not be expanded? $
+2,3;^Organization: Stollmann Gmbh, D 2000 Hamburg 50$
+3,2;^Why can it not be expanded? $
+2,5;^LE PROGRAMME BELL CENTRAIDE $
+3,2;^ABORIGINAL AFFAIRS $
+4,3;^Path: alberta!mnetor!uunet!mcvax!ukc!warwick!jeff$
+1,0;^Est-ce la premire fois qu'on tente d'imposer une volont aussi forte que cela?  $
+3,4;^Devant de tels rsultats, qu'a fait le gouvernement fdral libral depuis son arrive au pouvoir? $
+3,2;^Why can it not be expanded? $
+0,1;^#! rnews 541$
+4,0;^Compte tenu de ce qui se passe actuellement aux tats-Unis en particulier o de jeunes enfants en ont tu d'autres, ne croit-il pas qu'il pourrait amener son parti  changer d'attitude? $
+3,2;^Why can it not be expanded? $
+3,4;^Devant de tels rsultats, qu'a fait le gouvernement fdral libral depuis son arrive au pouvoir? $
+1,2;^up your world from them by fairly believable steps, and if you can't$
+0,5;^Doit-on comprendre que, dornavant, c'est toujours  la pice que seront traits les dossiers du Fonds transitoire de cration d'emplois?  $
+0,2;^	return;$
+1,2;^BILL C-68 $
+1,0;^Est-ce la premire fois qu'on tente d'imposer une volont aussi forte que cela?  $
+2,5;^Dputs $
+4,0;^ML gives you objects with modifiable state, so that you don't need to$
+0,3;^        Every now and then, I remember that they would add a new option$
+3,4;^When they asked the RCMP if they could shoot at the demonstrators, why did the Prime Minister not have them expelled from the country?  $
+0,2;^	return;$
+4,0;^Mme Francine Lalonde $
+3,4;^Le Prsident:$
+3,1;^Path: alberta!mnetor!uunet!mcvax!enea!sommar$
+4,2;^Subject: Re: Cooking Wines$
+3,4;^Devant de tels rsultats, qu'a fait le gouvernement fdral libral depuis son arrive au pouvoir? $
+3,2;^Why can it not be expanded? $
+3,2;^Why can it not be expanded? $
+2,1;^Keywords: Why$
+3,2;^Why can it not be expanded? $
+3,2;^Why can it not be expanded? $
+3,1;^The Deputy Speaker:$
+3,2;^Why can it not be expanded? $
+3,4;^Devant de tels rsultats, qu'a fait le gouvernement fdral libral depuis son arrive au pouvoir? $
+0,2;^	return;$
+3,2;^Why can it not be expanded? $
+0,2;^        episode which added little winglets which would come out from under-$
+0,3;^Qui a ngoci des assurances-maladie? $
+5,3;^				ifFalse: $
+2,0;^Finances $
+2,5;^Si les lois canadiennes ne s'appliquent plus, si le Parlement n'exerce plus l'autorit suprme et si le premier ministre n'est plus le premier dirigeant du pays, pourquoi avons-nous cr un tat indpendant  l'intrieur des limites du pays? $
+3,4;^Devant de tels rsultats, qu'a fait le gouvernement fdral libral depuis son arrive au pouvoir? $
+1,4;^      XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX$
+2,5;^LE PROGRAMME BELL CENTRAIDE $
+3,2;^Why can it not be expanded? $
+1,0;^Est-ce la premire fois qu'on tente d'imposer une volont aussi forte que cela?  $
+2,3;^Organization: Stollmann Gmbh, D 2000 Hamburg 50$
+0,1;^#! rnews 541$
+3,2;^Why can it not be expanded? $

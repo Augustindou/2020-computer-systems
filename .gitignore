@@ -20,3 +20,4 @@ results*.txt
 *.class
 */out/*
 
+computer-systems/assets/dbdata.txt

@@ -34,7 +34,7 @@ n_threads = [1] # make sure script is working
 hostname = "localhost"
 port     = 10069
 db_file  = f"../computer-systems/assets/dbdata.txt"
-verbose_clients = "false"
+verbose_clients = "true"
 
 # compile java files
 os.system(f"javac -cp {src_path} -d {exec_path} {src_path}Clients.java")

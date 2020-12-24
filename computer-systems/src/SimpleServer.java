@@ -43,6 +43,7 @@ import java.net.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,14 +51,15 @@ import java.util.regex.Pattern;
 public class SimpleServer {
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        if (args.length != 3) {
-            System.err.println("Usage: java SimpleServer <port number> <database text file> <number of threads>");
+        if (args.length != 3 && args.length != 4) {
+            System.err.println("Usage: java SimpleServer <port number> <database text file> <number of threads> [result text file]");
             System.exit(1);
         }
 
         int portNumber = Integer.parseInt(args[0]);
         String dbfile = args[1];
-        int N_THREADS = Integer.parseInt(args[2]);
+        final int N_THREADS = Integer.parseInt(args[2]);
+        String resultsFile = (args.length == 4) ? args[3] : null;
 
         ServerSocket serverSocket = new ServerSocket(portNumber);
         Buffer<Request> buffer = new Buffer<>(2000);
@@ -66,8 +68,12 @@ public class SimpleServer {
         System.out.println("Server is up");
 
         Socket clientSocket = serverSocket.accept();
-        ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
-        ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
+        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+        List<Long> queueTimes = new ArrayList<>();
+        List<Long> serviceTimes = new ArrayList<>();
+
 
         // Initializing worker threads
         Thread[] threads = new Thread[N_THREADS];
@@ -76,18 +82,24 @@ public class SimpleServer {
                 try {
                     Request r;
                     while ((r = buffer.take()) != null) {
-                        if (r.getClientID() == -1) break;
+                        if (r.getRequestValue().equals("Done")) break;
                         r.setFinishedQueuingTime(new Date());
                         r.setStartingToTreatRequestTime(new Date());
                         String outputLine = ssp.processInput(r.getRequestValue());
                         r.setFinishedTreatingRequestTime(new Date());
-                        r.setResponseValue(outputLine);
+                        if (r.getSentByClientTime() != null) {
+                            outputLine = r.getSentByClientTime().getTime() + ";" + outputLine;
+                        }
                         synchronized (out) {
-                            out.writeObject(r);
+                            out.println(outputLine);
                             out.flush();
                         }
+                        if (resultsFile != null) {
+                            logResponse(r.computeQueuingTime(), queueTimes);
+                            logResponse(r.computeServiceTime(), serviceTimes);
+                        }
                     }
-                } catch (InterruptedException | IOException e) {
+                } catch (InterruptedException e) {
                     System.err.println(e.getMessage());
                 }
             });
@@ -95,21 +107,26 @@ public class SimpleServer {
             threads[i].start();
         }
 
-
         // Loop to fill buffer
         try {
-            Request received;
-            while ((received = (Request) in.readObject()) != null) {
+            String fromClient;
+            while ((fromClient = in.readLine()) != null) {
+                Request received;
+                if (resultsFile != null) {
+                    String[] splitRequest = fromClient.split(";", 2);
+                    received = new Request(splitRequest[1]);
+                    received.setSentByClientTime(new Date(Long.parseLong(splitRequest[0])));
+                } else {
+                    received = new Request(fromClient);
+                }
                 received.setStartingQueuingTime(new Date());
                 if (!buffer.add(received)) System.err.println("Full buffer, had to drop a request");
             }
-        } catch (ClassNotFoundException e) {
-            System.err.println("Wrong object format");
-        } catch (EOFException e) {
-            // When the final object is read, the buffer throws and EOF exception.
             for (int i = 0; i < N_THREADS; i++) {
-                if (!buffer.add(new Request("Done", -1))) System.err.println("Could not stop a thread");
+                if (!buffer.add(new Request("Done"))) System.err.println("Could not stop a thread");
             }
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
         }
 
         // Waiting for the threads to finish to return
@@ -122,6 +139,28 @@ public class SimpleServer {
         serverSocket.close();
         clientSocket.close();
 
+        if (resultsFile != null) {
+            writeResultsFile(queueTimes, resultsFile+"_queue.txt");
+            writeResultsFile(serviceTimes, resultsFile+"_service.txt");
+        }
+
+    }
+
+    public static synchronized void logResponse(long time, List<Long> times) {
+        times.add(time);
+    }
+
+    public static void writeResultsFile(List<Long> resultsList, String outputFilename) {
+        try {
+            FileWriter outputWriter = new FileWriter(outputFilename);
+            for (long line : resultsList) {
+                outputWriter.write(line+"\n");
+            }
+            outputWriter.close();
+            System.out.println("Saved results to "+outputFilename);
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     public static String[][] initArray(String filename) {

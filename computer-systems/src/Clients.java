@@ -47,8 +47,8 @@ public class Clients {
 
     public static void main(String[] args) {
         // parse args
-        if (args.length != 7) {
-            System.err.println("Usage: java Clients <host name> <port number> <number of clients> <input file> <results file> <mean delay> <verbose>");
+        if (args.length != 6 && args.length != 7) {
+            System.err.println("Usage: java Clients <host name> <port number> <number of clients> <input file> <mean delay> <verbose> [results file]");
             System.exit(1);
         }
 
@@ -56,23 +56,25 @@ public class Clients {
         int portNumber = Integer.parseInt(args[1]);
         int numberOfClients = Integer.parseInt(args[2]);
         String inputFilename = args[3];
-        String outputFilename = args[4];
-        float meanDelay = Float.parseFloat(args[5]);
-        boolean verbose = Boolean.parseBoolean(args[6]);
+        float meanDelay = Float.parseFloat(args[4]);
+        boolean verbose = Boolean.parseBoolean(args[5]);
+        String outputFilename = (args.length == 7) ? args[6] : null;
+        boolean saveTime = outputFilename != null;
 
-        final List<String> resultsList = new ArrayList<>();
+        final List<Long> resultsList = new ArrayList<>();
 
         rand = new Random();
 
         Thread[] threads = new Thread[numberOfClients];
 
         List<String> requests = generateRequestList(inputFilename);
-        int[] requestsPerClient = new int[numberOfClients];
+
+        int totalRequests = requests.size() * numberOfClients;
 
         try (
             final Socket socket = new Socket(hostName, portNumber);
-            final ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-            final ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+            final PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            final BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         ) {
             for (int i = 0; i<numberOfClients; i++){
                 final int idx = i;
@@ -83,22 +85,17 @@ public class Clients {
                         Thread sendingThread = new Thread(() -> {
                             List<String> requestsForThread = new ArrayList<>(requests);
                             Collections.shuffle(requestsForThread);
-                            //int toDrop = rand.nextInt(requestsForThread.size());
-                            //requestsForThread.subList(toDrop, requestsForThread.size()).clear();
-                            synchronized (requestsPerClient) {
-                                requestsPerClient[idx] = requestsForThread.size();
-                            }
 
                             for (String r : requestsForThread){
                                 try {
                                     Thread.sleep((long) exponential(1/meanDelay));
-                                    Request req = new Request(r, idx);
-                                    synchronized (out) {
-                                        req.setSentByClientTime(new Date());
-                                        out.writeObject(req);
-                                        out.flush();
+                                    if (saveTime) {
+                                        r = new Date().getTime() + ";" + r;
                                     }
-                                } catch (InterruptedException | IOException e){
+                                    synchronized (out) {
+                                        out.println(r);
+                                    }
+                                } catch (InterruptedException e){
                                     System.err.println(e.getMessage());
                                 }
                             }
@@ -116,32 +113,38 @@ public class Clients {
             }
 
             Thread receivingThread = new Thread(() -> {
-                int[] counts = new int[numberOfClients];
                 int doneCount = 0;
                 try {
-                    Request fromServer;
-                    while ((doneCount < numberOfClients) && ((fromServer = (Request) in.readObject()) != null)) {
-                        fromServer.setReceivedByClientTime(new Date());
-                        logResponse(fromServer, resultsList);
-                        if (verbose) {
-                            System.out.println("Received Server Response of length : " + fromServer.getResponseValue().split("\n").length);
-                            // System.out.println("Received Server Response : \n" + fromServer.getResponseValue());
+                    String fromServer;
+                    int requestCount = 0;
+                    boolean newResponse = true;
+                    while ((fromServer = in.readLine()) != null) {
+                        requestCount++;
+                        if (saveTime && newResponse) {
+                            long finishingTime = new Date().getTime();
+                            String[] splitResponse = fromServer.split(";", 2);
+                            long timeStamp = Long.parseLong(splitResponse[0]);
+                            fromServer = splitResponse[1];
+                            newResponse = false;
+                            logResponse(finishingTime - timeStamp, resultsList);
                         }
-                        counts[fromServer.getClientID()]++;
-                        synchronized (requestsPerClient) {
-                            if (counts[fromServer.getClientID()] == requestsPerClient[fromServer.getClientID()]) {
-                                System.out.println("Client " + fromServer.getClientID() + " finished");
-                                doneCount++;
+
+                        if (fromServer.equals("")) {
+                            doneCount++;
+                            newResponse = true;
+                            if (verbose) {
+                                System.out.println("Received Server Response of length : " + (requestCount - 1));
+                                //System.out.println("Received Server Response : \n" + fromServer);
                             }
+                            requestCount = 0;
                         }
+
+                        if (doneCount == totalRequests)
+                            break;
+
                     }
-                } catch (EOFException e) {
-                    // EOF means that the server has stopped sending data
                 } catch (IOException e) {
                     System.err.println(e.getMessage());
-                    System.exit(1);
-                } catch (ClassNotFoundException e) {
-                    System.err.println("Error in request format");
                     System.exit(1);
                 }
             });
@@ -158,7 +161,7 @@ public class Clients {
             System.exit(1);
         }
 
-        writeResultsFile(resultsList, outputFilename);
+        writeResultsFile(resultsList, outputFilename+".txt");
 
     }
 
@@ -167,17 +170,15 @@ public class Clients {
         return Math.log(1-rand.nextDouble())/(-lambda);
     }
 
-    public static synchronized void logResponse(Request r, List<String> resultsList) {
-        r.computeIntervals();
-        String results = r.createTimeString();
-        resultsList.add(results);
+    public static synchronized void logResponse(long time, List<Long> resultsList) {
+        resultsList.add(time);
     }
 
-    public static void writeResultsFile(List<String> resultsList, String outputFilename) {
+    public static void writeResultsFile(List<Long> resultsList, String outputFilename) {
         try {
             FileWriter outputWriter = new FileWriter(outputFilename);
-            for (String line : resultsList) {
-                outputWriter.write(line);
+            for (long line : resultsList) {
+                outputWriter.write(line+"\n");
             }
             outputWriter.close();
             System.out.println("Saved results to "+outputFilename);

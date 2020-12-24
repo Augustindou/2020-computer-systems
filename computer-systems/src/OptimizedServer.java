@@ -43,21 +43,22 @@ import utils.Cache;
 import java.net.*;
 import java.io.*;
 import java.util.*;
-import java.util.regex.Matcher;
+
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class OptimizedServer {
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        if (args.length != 3) {
-            System.err.println("Usage: java OptimizedServer <port number> <database text file> <number of threads>");
+        if (args.length != 3 && args.length != 4) {
+            System.err.println("Usage: java OptimizedServer <port number> <database text file> <number of threads> [result text file]");
             System.exit(1);
         }
 
         int portNumber = Integer.parseInt(args[0]);
         String dbfile = args[1];
         final int N_THREADS = Integer.parseInt(args[2]);
+        String resultsFile = (args.length == 4) ? args[3] : null;
 
         ServerSocket serverSocket = new ServerSocket(portNumber);
         Buffer<Request> buffer = new Buffer<>(2000);
@@ -66,8 +67,12 @@ public class OptimizedServer {
         System.out.println("Server is up");
 
         Socket clientSocket = serverSocket.accept();
-        ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
-        ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
+        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+        List<Long> queueTimes = new ArrayList<>();
+        List<Long> serviceTimes = new ArrayList<>();
+
 
         // Initializing worker threads
         Thread[] threads = new Thread[N_THREADS];
@@ -76,18 +81,24 @@ public class OptimizedServer {
                 try {
                     Request r;
                     while ((r = buffer.take()) != null) {
-                        if (r.getClientID() == -1) break;
+                        if (r.getRequestValue().equals("Done")) break;
                         r.setFinishedQueuingTime(new Date());
                         r.setStartingToTreatRequestTime(new Date());
                         String outputLine = osp.processInput(r.getRequestValue());
                         r.setFinishedTreatingRequestTime(new Date());
-                        r.setResponseValue(outputLine);
+                        if (r.getSentByClientTime() != null) {
+                            outputLine = r.getSentByClientTime().getTime() + ";" + outputLine;
+                        }
                         synchronized (out) {
-                            out.writeObject(r);
+                            out.println(outputLine);
                             out.flush();
                         }
+                        if (resultsFile != null) {
+                            logResponse(r.computeQueuingTime(), queueTimes);
+                            logResponse(r.computeServiceTime(), serviceTimes);
+                        }
                     }
-                } catch (InterruptedException | IOException e) {
+                } catch (InterruptedException e) {
                     System.err.println(e.getMessage());
                 }
             });
@@ -95,21 +106,26 @@ public class OptimizedServer {
             threads[i].start();
         }
 
-
         // Loop to fill buffer
         try {
-            Request received;
-            while ((received = (Request) in.readObject()) != null) {
+            String fromClient;
+            while ((fromClient = in.readLine()) != null) {
+                Request received;
+                if (resultsFile != null) {
+                    String[] splitRequest = fromClient.split(";", 2);
+                    received = new Request(splitRequest[1]);
+                    received.setSentByClientTime(new Date(Long.parseLong(splitRequest[0])));
+                } else {
+                    received = new Request(fromClient);
+                }
                 received.setStartingQueuingTime(new Date());
                 if (!buffer.add(received)) System.err.println("Full buffer, had to drop a request");
             }
-        } catch (ClassNotFoundException e) {
-            System.err.println("Wrong object format");
-        } catch (EOFException e) {
-            // When the final object is read, the buffer throws and EOF exception.
             for (int i = 0; i < N_THREADS; i++) {
-                if (!buffer.add(new Request("Done", -1))) System.err.println("Could not stop a thread");
+                if (!buffer.add(new Request("Done"))) System.err.println("Could not stop a thread");
             }
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
         }
 
         // Waiting for the threads to finish to return
@@ -122,9 +138,14 @@ public class OptimizedServer {
         serverSocket.close();
         clientSocket.close();
 
+        if (resultsFile != null) {
+            writeResultsFile(queueTimes, resultsFile+"_queue.txt");
+            writeResultsFile(serviceTimes, resultsFile+"_service.txt");
+        }
+
     }
 
-    public static Map<Integer, Set<String>> initArray(String filename) {
+    public static Map<Integer, List<String>> initArray(String filename) {
         try {
             File file = new File(filename);
 
@@ -142,18 +163,42 @@ public class OptimizedServer {
                 map.get(idx).add(data[1]);
             }
             reader.close();
-            return map;
+
+            // String[][] finalData = new String[map.size()][];
+            Map<Integer, List<String>> mapOfLists = new HashMap<>();
+            for (Map.Entry<Integer, Set<String>> e : map.entrySet()) {
+                mapOfLists.put(e.getKey(), new ArrayList<>(e.getValue()));
+            }
+            return mapOfLists;
         } catch (FileNotFoundException e) {
             System.err.println("No such file");
             return null;
         }
+
+    }
+
+    public static synchronized void logResponse(long time, List<Long> times) {
+        times.add(time);
+    }
+
+    public static void writeResultsFile(List<Long> resultsList, String outputFilename) {
+        try {
+            FileWriter outputWriter = new FileWriter(outputFilename);
+            for (long line : resultsList) {
+                outputWriter.write(line+"\n");
+            }
+            outputWriter.close();
+            System.out.println("Saved results to "+outputFilename);
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     public static class OptimizedServerProtocol {
-        private final Map<Integer, Set<String>> dataMap;
+        private final Map<Integer, List<String>> dataMap;
         private final Cache cache;
 
-        public OptimizedServerProtocol(Map<Integer, Set<String>> dataMap, int N, float theta) {
+        public OptimizedServerProtocol(Map<Integer, List<String>> dataMap, int N, float theta) {
             this.dataMap = dataMap;
             this.cache = new Cache(N, theta);
         }
@@ -192,11 +237,12 @@ public class OptimizedServer {
 
             // Search in each type are independent, it can be done in concurrent threads
             StringBuilder builder = new StringBuilder();
-            Map<Integer, Set<String>> map = OptimizedServerProtocol.this.dataMap;
+            Map<Integer, List<String>> map = OptimizedServerProtocol.this.dataMap;
             for (int idx : intTypes) {
                 String matches = idx+"@@@"+map.get(idx).stream().filter(pattern.asPredicate()).collect(Collectors.joining("\n"+idx+"@@@"));
                 matches = matches.substring(0, matches.length()-(idx+"@@@").length());
-                builder.append(matches);
+                if (matches.length() > 0)
+                    builder.append(matches+"\n");
             }
 
             String response;
@@ -210,4 +256,6 @@ public class OptimizedServer {
             return response;
         }
     }
+
+
 }

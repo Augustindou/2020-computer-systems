@@ -44,6 +44,7 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -145,7 +146,7 @@ public class OptimizedServer {
 
     }
 
-    public static Map<Integer, List<String>> initArray(String filename) {
+    public static String[][] initArray(String filename) {
         try {
             File file = new File(filename);
 
@@ -164,12 +165,16 @@ public class OptimizedServer {
             }
             reader.close();
 
-            // String[][] finalData = new String[map.size()][];
-            Map<Integer, List<String>> mapOfLists = new HashMap<>();
+            String[][] finalData = new String[map.size()][];
+            for (Map.Entry<Integer, Set<String>> e : map.entrySet()) {
+                finalData[e.getKey()] = e.getValue().toArray(new String[0]);
+            }
+            return finalData;
+            /*Map<Integer, List<String>> mapOfLists = new HashMap<>();
             for (Map.Entry<Integer, Set<String>> e : map.entrySet()) {
                 mapOfLists.put(e.getKey(), new ArrayList<>(e.getValue()));
             }
-            return mapOfLists;
+            return mapOfLists;*/
         } catch (FileNotFoundException e) {
             System.err.println("No such file");
             return null;
@@ -195,10 +200,10 @@ public class OptimizedServer {
     }
 
     public static class OptimizedServerProtocol {
-        private final Map<Integer, List<String>> dataMap;
+        private final String[][] dataMap;
         private final Cache cache;
 
-        public OptimizedServerProtocol(Map<Integer, List<String>> dataMap, int N, float theta) {
+        public OptimizedServerProtocol(String[][] dataMap, int N, float theta) {
             this.dataMap = dataMap;
             this.cache = new Cache(N, theta);
         }
@@ -237,13 +242,22 @@ public class OptimizedServer {
 
             // Search in each type are independent, it can be done in concurrent threads
             StringBuilder builder = new StringBuilder();
-            Map<Integer, List<String>> map = OptimizedServerProtocol.this.dataMap;
+            String[][] map = OptimizedServerProtocol.this.dataMap;
             for (int idx : intTypes) {
+                for (String s : map[idx]) {
+                    Matcher matcher = pattern.matcher(s);
+                    if (matcher.find()) {
+                        builder.append(idx).append("@@@").append(s).append("\n");
+                    }
+                }
+            }
+
+            /*for (int idx : intTypes) {
                 String matches = idx+"@@@"+map.get(idx).stream().filter(pattern.asPredicate()).collect(Collectors.joining("\n"+idx+"@@@"));
                 matches = matches.substring(0, matches.length()-(idx+"@@@").length());
                 if (matches.length() > 0)
                     builder.append(matches+"\n");
-            }
+            }*/
 
             String response;
             if (builder.length() > 0)

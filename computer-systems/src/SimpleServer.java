@@ -215,8 +215,8 @@ public class SimpleServer {
                                 Matcher matcher = pattern.matcher(this.dataArray[i][1]);
                                 if (matcher.find()) {
                                     toSend.append(this.dataArray[i][0]).append("@@@").append(this.dataArray[i][1]).append("\n");
+                                    break;
                                 }
-                                break;
                             }
                         }
                     }

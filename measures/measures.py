@@ -6,6 +6,7 @@ import os
 import itertools
 # threads
 from threading import Thread
+import time
 
 VERBOSE = True
 
@@ -24,21 +25,21 @@ n_clients = [1, 2] # make sure script is working
 input = ["easy-requests-100"] # make sure script is working
 # delay [ms]
 # delays = np.arange(5, 25, 5)*1000
-delays = [5000] # make sure script is working
+delays = [1000] # make sure script is working
 # server threads
 # n_threads = [1, 2, 4, 6, 8, 10, 12, 16]
 n_threads = [1] # make sure script is working
 
 # code variables
 hostname = "localhost"
-port     = 69
-db_file  = "assets/dbdata.txt"
+port     = 10069
+db_file  = f"../computer-systems/assets/dbdata.txt"
 verbose_clients = "false"
 
 # compile java files
-os.system(f"javac -d {exec_path} {src_path}Clients.java")
-os.system(f"javac -d {exec_path} {src_path}OptimizedServer.java")
-os.system(f"javac -d {exec_path} {src_path}SimpleServer.java")
+os.system(f"javac -cp {src_path} -d {exec_path} {src_path}Clients.java")
+os.system(f"javac -cp {src_path} -d {exec_path} {src_path}OptimizedServer.java")
+os.system(f"javac -cp {src_path} -d {exec_path} {src_path}SimpleServer.java")
 if VERBOSE: print("--- Compiled java files ---")
 
 if VERBOSE: print("--- Running tests ---")
@@ -47,15 +48,17 @@ for t, n, f, d in itertools.product(n_threads, n_clients, input, delays):
     if VERBOSE: print(f"--- Test : {t} threads, {n} clients, {d}ms delay, {f} ---")
     # strings
     input_file = f"{input_path}{f}.txt"
-    server_output_file = f"{output_path}SERVER {f} - {n} clients - {d}ms delay - {t} threads.txt"
-    client_output_file = f"{output_path}CLIENT {f} - {n} clients - {d}ms delay - {t} threads.txt"
+    server_output_file = f"{output_path}SERVER\ {f}\ -\ {n}\ clients\ -\ {d}ms\ delay\ -\ {t}\ threads.txt"
+    client_output_file = f"{output_path}CLIENT\ {f}\ -\ {n}\ clients\ -\ {d}ms\ delay\ -\ {t}\ threads.txt"
     # server thread
     # java OptimizedServer <port number> <database text file> <number of threads> [result text file]
-    server = Thread(target = os.system, args = (f"java {exec_path}OptimizedServer {port} {db_file} {t} {server_output_file}",))
+    server = Thread(target = os.system, args = (f"java -cp {exec_path} OptimizedServer {port} {db_file} {t} {server_output_file}",))
     server.start()
+    time.sleep(5)
+
     # client thread
     # java Clients <host name> <port number> <number of clients> <input file> <mean delay> <verbose> [results file]
-    client = Thread(target = os.system, args = (f"java {exec_path}Clients {hostname} {port} {n} {input_file} {d} {verbose_clients} {client_output_file}",))
+    client = Thread(target = os.system, args = (f"java -cp {exec_path} Clients {hostname} {port} {n} {input_file} {d} {verbose_clients} {client_output_file}",))
     client.start()
     # join threads
     client.join()

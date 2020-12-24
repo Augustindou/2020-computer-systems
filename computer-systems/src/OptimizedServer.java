@@ -46,7 +46,6 @@ import java.util.*;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class OptimizedServer {
 
@@ -182,6 +181,14 @@ public class OptimizedServer {
 
     }
 
+    public static int[] arange(int N) {
+        int[] res = new int[N];
+        for (int i = 0; i < N; i++) {
+            res[i] = i;
+        }
+        return res;
+    }
+
     public static synchronized void logResponse(long time, List<Long> times) {
         times.add(time);
     }
@@ -232,7 +239,7 @@ public class OptimizedServer {
             int[] intTypes;
             if (types.length == 1 && types[0].equals("")) {
                 // If no types we search them all
-                intTypes = new int[]{0, 1, 2, 3, 4, 5};
+                intTypes = arange(this.dataMap.length);
             } else {
                 intTypes = new int[types.length];
                 for (int i = 0; i < types.length; i++) {

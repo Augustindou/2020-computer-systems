@@ -35,7 +35,6 @@
  *      SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import utils.Request;
 
 import java.io.*;
 import java.net.*;

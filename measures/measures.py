@@ -12,7 +12,7 @@ VERBOSE = True
 # paths to directories
 root_path = "../"
 exec_path = f"{root_path}java_executables/"
-src_path = f"{root_path}src/"
+src_path = f"{root_path}computer-systems/src/"
 input_path = f"{root_path}regex-generation/"
 output_path = f"{root_path}output_files/"
 
@@ -30,8 +30,8 @@ delays = [5000] # make sure script is working
 n_threads = [1] # make sure script is working
 
 # code variables
-hostname = "" # ! TODO
-port     = 80
+hostname = "localhost"
+port     = 69
 db_file  = "assets/dbdata.txt"
 verbose_clients = "false"
 

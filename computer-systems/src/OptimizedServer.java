@@ -50,21 +50,23 @@ import java.util.regex.Pattern;
 public class OptimizedServer {
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        if (args.length != 3 && args.length != 4) {
-            System.err.println("Usage: java OptimizedServer <port number> <database text file> <number of threads> [result text file]");
+        if (args.length != 4 && args.length != 5) {
+            System.err.println("Usage: java OptimizedServer <port number> <database text file> <number of threads> <verbose> [result text file]");
             System.exit(1);
         }
 
         int portNumber = Integer.parseInt(args[0]);
         String dbfile = args[1];
         final int N_THREADS = Integer.parseInt(args[2]);
-        String resultsFile = (args.length == 4) ? args[3] : null;
+        final boolean verbose = Boolean.parseBoolean(args[3]);
+        String resultsFile = (args.length == 5) ? args[4] : null;
 
         ServerSocket serverSocket = new ServerSocket(portNumber);
         Buffer<Request> buffer = new Buffer<>(2000);
         OptimizedServerProtocol osp = new OptimizedServerProtocol(initArray(dbfile), 20, 5);
 
-        System.out.println("Server is up");
+        if (verbose)
+            System.out.println("Server is up at "+InetAddress.getLocalHost());
 
         Socket clientSocket = serverSocket.accept();
         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -139,8 +141,8 @@ public class OptimizedServer {
         clientSocket.close();
 
         if (resultsFile != null) {
-            writeResultsFile(queueTimes, resultsFile+"_queue.txt");
-            writeResultsFile(serviceTimes, resultsFile+"_service.txt");
+            writeResultsFile(queueTimes, resultsFile+"_queue.txt", verbose);
+            writeResultsFile(serviceTimes, resultsFile+"_service.txt", verbose);
         }
 
     }
@@ -193,14 +195,15 @@ public class OptimizedServer {
         times.add(time);
     }
 
-    public static void writeResultsFile(List<Long> resultsList, String outputFilename) {
+    public static void writeResultsFile(List<Long> resultsList, String outputFilename, boolean verbose) {
         try {
             FileWriter outputWriter = new FileWriter(outputFilename);
             for (long line : resultsList) {
                 outputWriter.write(line+"\n");
             }
             outputWriter.close();
-            System.out.println("Saved results to "+outputFilename);
+            if (verbose)
+                System.out.println("Saved results to "+outputFilename);
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }

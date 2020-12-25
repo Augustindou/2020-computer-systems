@@ -142,6 +142,8 @@ public class Clients {
                             break;
 
                     }
+                    if (verbose)
+                        System.out.println("All clients finished");
                 } catch (IOException e) {
                     System.err.println(e.getMessage());
                     System.exit(1);
@@ -160,7 +162,7 @@ public class Clients {
             System.exit(1);
         }
 
-        writeResultsFile(resultsList, outputFilename+".txt");
+        writeResultsFile(resultsList, outputFilename+".txt", verbose);
 
     }
 
@@ -173,14 +175,15 @@ public class Clients {
         resultsList.add(time);
     }
 
-    public static void writeResultsFile(List<Long> resultsList, String outputFilename) {
+    public static void writeResultsFile(List<Long> resultsList, String outputFilename, boolean verbose) {
         try {
             FileWriter outputWriter = new FileWriter(outputFilename);
             for (long line : resultsList) {
                 outputWriter.write(line+"\n");
             }
             outputWriter.close();
-            System.out.println("Saved results to "+outputFilename);
+            if (verbose)
+                System.out.println("Saved results to "+outputFilename);
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
@@ -198,7 +201,7 @@ public class Clients {
             }
             return requests;
         } catch (IOException e) {
-            System.out.println("Empty file or file not found");
+            System.err.println("Empty file or file not found");
             return requests;
         }
     }

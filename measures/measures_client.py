@@ -29,3 +29,16 @@ for i, (f, (n, d, t)) in enumerate(itertools.product(input_files, variable_input
     if VERBOSE: 
         print(f"Test took {time.time() - tic} s")
         print("done")
+
+for i, (f, (n, d, t)) in enumerate(itertools.product(input_files, variable_inputs_optimized)):
+    if VERBOSE: print(f"--- Client Test #{i} (optimized) : {n} clients, {d}ms delay, {f} (server should be on {t} threads) ---")
+    # waiting for server
+    time.sleep(20)
+    # strings
+    input_file = f"{input_path}{f}.txt"
+    tic = time.time()
+    # java Clients <host name> <port number> <number of clients> <input file> <mean delay> <verbose> [results file]
+    os.system(f"java -cp {exec_path} Clients {hostname} {port} {n} {input_file} {d} {verbose_clients} {optimized_client_output_file(f, n, d, t)}")
+    if VERBOSE: 
+        print(f"Test took {time.time() - tic} s")
+        print("done")

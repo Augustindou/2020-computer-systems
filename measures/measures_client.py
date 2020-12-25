@@ -30,10 +30,11 @@ for i, (f, (n, d, t)) in enumerate(itertools.product(input_files, variable_input
         print(f"Test took {time.time() - tic} s")
         print("done")
 
+# OPTIMIZED
 for i, (f, (n, d, t)) in enumerate(itertools.product(input_files, variable_inputs_optimized)):
     if VERBOSE: print(f"--- Client Test #{i} (optimized) : {n} clients, {d}ms delay, {f} (server should be on {t} threads) ---")
     # waiting for server
-    time.sleep(20)
+    time.sleep(40)
     # strings
     input_file = f"{input_path}{f}.txt"
     tic = time.time()

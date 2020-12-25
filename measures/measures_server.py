@@ -28,6 +28,7 @@ for i, (f, (n, d, t)) in enumerate(itertools.product(input_files, variable_input
         print(f"Test took {time.time() - tic} s")
         print("done")
 
+# OPTIMIZED
 for i, (f, (n, d, t)) in enumerate(itertools.product(input_files, variable_inputs_optimized)):
     if VERBOSE: print(f"--- Server Test #{i} (optimized) : {t} threads (client should be on {n} clients, {d}ms delay, {f}) ---")
     # java OptimizedServer <port number> <database text file> <number of threads> [result text file]

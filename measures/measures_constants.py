@@ -21,11 +21,6 @@ n_threads = [6, 2, 4, 8, 12, 16]
 
 # input files (txt and path will be added), will always run all inputs
 input_files = ["easy-requests", "hard-requests", "network-intensive-requests"]
-# for testing
-n_clients = [40]
-delays = np.array([10])*1000
-n_threads = [6]
-input_files = ["hard-requests"]
 
 # code variables
 hostname = "192.168.1.22"

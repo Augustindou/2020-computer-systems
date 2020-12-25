@@ -1,8 +1,8 @@
 import random
 import string
 
-starting_chars = list(string.ascii_uppercase)
-lowercase_chars = list(string.ascii_lowercase)
+starting_chars = ['B', 'C', 'D', 'F', 'G', 'H', 'L', 'M', 'N', 'P', 'R', 'S']
+lowercase_chars = ['a', 'e', 'i', 'o', 'u']git 
 
 random.shuffle(starting_chars)
 random.shuffle(lowercase_chars)

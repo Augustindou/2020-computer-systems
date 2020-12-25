@@ -15,7 +15,7 @@ while len(regexes) < 25:
             ends.append(end_of_regex)
             number_of_cat = 2
             cats = random.sample(['0', '1', '2', '3', '4', '5'], k=number_of_cat)
-            regex = ','.join(cats) + ';'+'.{0,'+str(regex_complexity)+'}'+end_of_regex+'\n'
+            regex = ','.join(cats) + ';'+'.'+end_of_regex+'\n'
             regexes.append(regex)
 
 with open('hard-requests.txt', 'w+') as f:

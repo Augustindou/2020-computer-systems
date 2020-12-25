@@ -1,25 +1,25 @@
-3,2;^YEAS $
-4,3;^CHAMBRE DES COMMUNES $
-1,0;^O sont les objectifs pour rduire la pauvret au Canada? $
-1,4;^Jerome BORDIER   Laboratoire Structures Discretes  Institut IMAG$
-5,3;^Nf-ID: #R:brl-adm:10559:iaoobelix:8300012:000:1331$
-1,0;^O sont les objectifs pour rduire la pauvret au Canada? $
-1,4;^Jerome BORDIER   Laboratoire Structures Discretes  Institut IMAG$
-3,1;^Le vice-prsident:$
-0,5;^RECOURS AU RGLEMENT $
-4,5;^sum=$1$
-1,4;^using, and you can communicate its value, you will not need such$
-4,5;^Member for Qubec East $
-0,5;^RECOURS AU RGLEMENT $
-0,5;^RECOURS AU RGLEMENT $
-1,3;^LOI DE 1999 SUR LES SERVICES GOUVERNEMENTAUX $
-1,0;^O sont les objectifs pour rduire la pauvret au Canada? $
-1,4;^using, and you can communicate its value, you will not need such$
-0,5;^Le vice-prsident:$
-1,4;^using, and you can communicate its value, you will not need such$
-0,2;^#$
-0,4;^GOVERNMENT RESPONSE TO PETITIONS $
-1,4;^using, and you can communicate its value, you will not need such$
-5,4;^story-teller is a "sub-creator", who tries to create a "secondary$
-5,3;^Introduction and first reading $
-3,1;^Le vice-prsident:$
+4,1;^mcamojyuor
+2,3;^xzakccuruh
+4,1;^mcamojyuor
+3,5;^axhgpcrvqi
+4,1;^mcamojyuor
+2,3;^xzakccuruh
+5,0;^plozmnxyvk
+4,1;^mcamojyuor
+4,3;^lwcyehrbei
+1,2;^excjsoozrw
+4,3;^lwcyehrbei
+2,0;^hbjggtstgm
+4,3;^ztqoxqxhgd
+0,4;^jenopzqaky
+5,1;^jxnaxjvrbf
+4,0;^ksjzofbifx
+1,0;^bxojfmdtds
+0,1;^dvmsourjbi
+0,4;^jenopzqaky
+4,1;^mcamojyuor
+3,1;^ivqdaewlgr
+1,2;^guvkseyyin
+1,2;^glqpvxadkp
+2,3;^xzakccuruh
+5,1;^jxnaxjvrbf

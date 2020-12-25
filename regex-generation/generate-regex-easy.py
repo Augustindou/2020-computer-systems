@@ -1,51 +1,19 @@
 import numpy as np
 import random
-
-
-min_len = 10
-
-lines = []
-
-count = 0
-with open("dbdata.txt") as f:
-    while count < 50000:
-        line = f.readline()
-        lines.append(line)    
-        count += 1
-
-lines = np.array(lines)
-np.random.shuffle(lines)
+import string
 
 regexes = []
-
-i = 0
+starts = []
 while len(regexes) < 25:
     if (random.choices([True, False], weights=[25, 75], k=1)[0]) and len(regexes) > 1:
         regexes.append(random.choice(regexes))
     else:
-        line = lines[i]
-
-        number_of_cat = 2
-
-        data = line[4:]
-        data = data.strip('\n')
-
-        i+=1
-        if all([x not in data for x in ['(', ')', '{', '}', '*', '.', '\n']]):
-            cats = [int(line[0])]
-            while len(cats) < number_of_cat:
-                new_cat = random.choice([0, 1, 2, 3, 4, 5])
-                if new_cat not in cats:
-                    cats.append(new_cat)
-            
-            regex = ''
-            if number_of_cat > 0:
-                for cat in cats:
-                    regex+=','+str(cat)
-            regex = regex.strip(',')
-            regex += ';'
-            regex += '^'+data+'$'
-            regex += '\n'
+        start_of_regex = ''.join(random.choice(string.ascii_lowercase) for _ in range(10))
+        if start_of_regex not in starts:
+            starts.append(start_of_regex)
+            number_of_cat = 2
+            cats = random.sample(['0', '1', '2', '3', '4', '5'], k=number_of_cat)
+            regex = ','.join(cats) + ';'+'^'+start_of_regex+'\n'
             regexes.append(regex)
 
 with open('easy-requests.txt', 'w+') as f:

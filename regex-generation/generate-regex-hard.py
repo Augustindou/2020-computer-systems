@@ -8,7 +8,7 @@ while len(regexes) < 25:
     if (random.choices([True, False], weights=[25, 75], k=1)[0]) and len(regexes) > 1:
         regexes.append(random.choice(regexes))
     else:
-        end_of_regex = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(90git ))
+        end_of_regex = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(100))
         if end_of_regex not in ends:
             ends.append(end_of_regex)
             number_of_cat = 2

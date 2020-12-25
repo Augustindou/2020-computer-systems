@@ -28,10 +28,11 @@ n_threads = [6, 2]
 input_files = ["easy-requests-100", "network-intensive-requests-100"]
 
 # code variables
-hostname = "::1"
+hostname = "192.168.1.105"
 port     = 10069
 db_file  = f"{java_project_path}assets/dbdata.txt"
 verbose_clients = "false"
+verbose_server = "false"
 
 variable_inputs = np.array([(n_clients[0], delays[0], n_threads[0])])
 for n in n_clients[1:] : variable_inputs = np.append(variable_inputs, [(n           , delays[0], n_threads[0])], axis=0)

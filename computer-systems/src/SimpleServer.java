@@ -63,7 +63,7 @@ public class SimpleServer {
         String resultsFile = (args.length == 5) ? args[4] : null;
 
         ServerSocket serverSocket = new ServerSocket(portNumber);
-        Buffer<Request> buffer = new Buffer<>(2000);
+        Buffer<Request> buffer = new Buffer<>(10000);
         SimpleServer.SimpleServerProtocol ssp = new SimpleServer.SimpleServerProtocol(initArray(dbfile));
 
         if (verbose)

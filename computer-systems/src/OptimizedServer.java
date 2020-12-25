@@ -62,7 +62,7 @@ public class OptimizedServer {
         String resultsFile = (args.length == 5) ? args[4] : null;
 
         ServerSocket serverSocket = new ServerSocket(portNumber);
-        Buffer<Request> buffer = new Buffer<>(2000);
+        Buffer<Request> buffer = new Buffer<>(10000);
         OptimizedServerProtocol osp = new OptimizedServerProtocol(initArray(dbfile), 20, 5);
 
         if (verbose)

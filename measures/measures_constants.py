@@ -20,12 +20,12 @@ delays = np.array([10, 2, 4, 6, 8, 15, 20, 30, 40, 50])*1000
 n_threads = [6, 2, 4, 8, 10, 12, 16]
 
 # input files (txt and path will be added), will always run all inputs
-input_files = ["easy-requests-100", "hard-requests-100", "network-intensive-requests-100"]
+input_files = ["easy-requests", "hard-requests", "network-intensive-requests"]
 # for testing
 n_clients = [40, 2]
 delays = np.array([1, 2])*1000
 n_threads = [6, 2]
-input_files = ["easy-requests-100", "network-intensive-requests-100"]
+input_files = ["easy-requests", "network-intensive-requests"]
 
 # code variables
 hostname = "192.168.1.105"

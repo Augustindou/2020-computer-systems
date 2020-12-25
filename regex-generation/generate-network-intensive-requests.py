@@ -6,7 +6,7 @@ starting_chars = list(string.ascii_uppercase)
 random.shuffle(starting_chars)
 
 regexes=[]
-for i in range(100):
+for i in range(25):
     if (random.choices([True, False], weights=[25, 75], k=1)[0]) and len(regexes) > 1:
         regexes.append(random.choice(regexes))
     else:
@@ -16,5 +16,5 @@ for i in range(100):
         regexes.append(regex)
 
 
-with open('network-intensive-requests-100.txt', 'w+') as f:
+with open('network-intensive-requests.txt', 'w+') as f:
     f.writelines(regexes)

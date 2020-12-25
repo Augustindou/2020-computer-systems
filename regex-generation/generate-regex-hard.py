@@ -6,7 +6,7 @@ regex_complexity = 1
 
 regexes = []
 ends = []
-while len(regexes) < 100:
+while len(regexes) < 25:
     if (random.choices([True, False], weights=[25, 75], k=1)[0]) and len(regexes) > 1:
         regexes.append(random.choice(regexes))
     else:
@@ -18,7 +18,7 @@ while len(regexes) < 100:
             regex = ','.join(cats) + ';'+'.{0,'+str(regex_complexity)+'}'+end_of_regex+'\n'
             regexes.append(regex)
 
-with open('hard-requests-100.txt', 'w+') as f:
+with open('hard-requests.txt', 'w+') as f:
     f.writelines(regexes)
 
 

@@ -19,7 +19,7 @@ np.random.shuffle(lines)
 regexes = []
 
 i = 0
-while len(regexes) < 100:
+while len(regexes) < 25:
     if (random.choices([True, False], weights=[25, 75], k=1)[0]) and len(regexes) > 1:
         regexes.append(random.choice(regexes))
     else:
@@ -48,5 +48,5 @@ while len(regexes) < 100:
             regex += '\n'
             regexes.append(regex)
 
-with open('easy-requests-100.txt', 'w+') as f:
+with open('easy-requests.txt', 'w+') as f:
     f.writelines(regexes)

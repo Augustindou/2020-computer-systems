@@ -23,7 +23,7 @@ for i, (f, (n, d, t)) in enumerate(itertools.product(input_files, variable_input
     if VERBOSE: print(f"--- Server Test #{i} : {t} threads (client should be on {n} clients, {d}ms delay, {f}) ---")
     # java OptimizedServer <port number> <database text file> <number of threads> [result text file]
     tic = time.time()
-    os.system(f"java -cp {exec_path} SimpleServer {port} {db_file} {t} {verbose_server} {server_output_file(f, n, d, t)}")
+    # os.system(f"java -cp {exec_path} SimpleServer {port} {db_file} {t} {verbose_server} {server_output_file(f, n, d, t)}")
     if VERBOSE: 
         print(f"Test took {time.time() - tic} s")
         print("done")

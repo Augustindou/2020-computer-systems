@@ -28,7 +28,7 @@ n_threads = [6, 2]
 input_files = ["easy-requests-100", "network-intensive-requests-100"]
 
 # code variables
-hostname = "localhost"
+hostname = "::1"
 port     = 10069
 db_file  = f"{java_project_path}assets/dbdata.txt"
 verbose_clients = "false"
@@ -38,5 +38,5 @@ for n in n_clients[1:] : variable_inputs = np.append(variable_inputs, [(n       
 for d in delays   [1:] : variable_inputs = np.append(variable_inputs, [(n_clients[0], d        , n_threads[0])], axis=0)
 for t in n_threads[1:] : variable_inputs = np.append(variable_inputs, [(n_clients[0], delays[0], t           )], axis=0)
 
-client_output_file = lambda f, n, d, t : f"{output_path}CLIENT_{f}_{n}\ clients_{d}\ delay_{t}\ threads"
-server_output_file = lambda f, n, d, t : f"{output_path}SERVER_{f}_{n}\ clients_{d}\ delay_{t}\ threads"
+client_output_file = lambda f, n, d, t : f"{output_path}CLIENT_{f}_{n}clients_{d}delay_{t}threads"
+server_output_file = lambda f, n, d, t : f"{output_path}SERVER_{f}_{n}clients_{d}delay_{t}threads"

@@ -19,8 +19,6 @@ if VERBOSE: print("--- Running tests ---")
 # iterate over all combinations
 for i, (f, (n, d, t)) in enumerate(itertools.product(input_files, variable_inputs)):
     if VERBOSE: print(f"--- Server Test #{i} : {t} threads (client should be on {n} clients, {d}ms delay, {f}) ---")
-    # strings
-    server_output_file = f"{output_path}SERVER\ {f}\ -\ {n}\ clients\ -\ {d}ms\ delay\ -\ {t}\ threads.txt"
     # java OptimizedServer <port number> <database text file> <number of threads> [result text file]
-    os.system(f"java -cp {exec_path} SimpleServer {port} {db_file} {t} {verbose} {server_output_file}")
+    os.system(f"java -cp {exec_path} SimpleServer {port} {db_file} {t} {server_output_file(f, n, d, t)}")
     if VERBOSE: print("done")

@@ -8,6 +8,8 @@ import itertools
 from threading import Thread
 # import constants
 from measures_constants import *
+# to measure time
+import time
 
 
 # compile java files
@@ -20,5 +22,9 @@ if VERBOSE: print("--- Running tests ---")
 for i, (f, (n, d, t)) in enumerate(itertools.product(input_files, variable_inputs)):
     if VERBOSE: print(f"--- Server Test #{i} : {t} threads (client should be on {n} clients, {d}ms delay, {f}) ---")
     # java OptimizedServer <port number> <database text file> <number of threads> [result text file]
+    tic = time.time()
     os.system(f"java -cp {exec_path} SimpleServer {port} {db_file} {t} {verbose_server} {server_output_file(f, n, d, t)}")
-    if VERBOSE: print("done")
+    if VERBOSE: 
+        print(f"Test took {time.time() - tic} s")
+        print("done")
+    

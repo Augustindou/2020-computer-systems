@@ -25,7 +25,7 @@ input_files = ["easy-requests", "hard-requests", "network-intensive-requests"]
 n_clients = [40]
 delays = np.array([10])*1000
 n_threads = [6]
-input_files = ["easy-requests", "network-intensive-requests", "hard-requests"]
+input_files = ["network-intensive-requests", "hard-requests"]
 
 # code variables
 hostname = "192.168.1.105"

@@ -2,8 +2,10 @@ import random
 import string
 
 starting_chars = list(string.ascii_uppercase)
+lowercase_chars = list(string.ascii_lowercase)
 
 random.shuffle(starting_chars)
+random.shuffle(lowercase_chars)
 
 regexes=[]
 for i in range(25):
@@ -12,7 +14,7 @@ for i in range(25):
     else:
         number_of_cat = 2
         cats = random.sample(['0', '1', '2', '3', '4', '5'], k=number_of_cat)
-        regex = ','.join(cats) + ';'+'^'+starting_chars[i % len(starting_chars)]+'\n'
+        regex = ','.join(cats) + ';'+'^'+starting_chars[i % len(starting_chars)] + lowercase_chars[i % len(lowercase_chars)] +'\n'
         regexes.append(regex)
 
 

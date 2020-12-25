@@ -23,6 +23,9 @@ for i, (f, (n, d, t)) in enumerate(itertools.product(input_files, variable_input
     time.sleep(20)
     # strings
     input_file = f"{input_path}{f}.txt"
+    tic = time.time()
     # java Clients <host name> <port number> <number of clients> <input file> <mean delay> <verbose> [results file]
     os.system(f"java -cp {exec_path} Clients {hostname} {port} {n} {input_file} {d} {verbose_clients} {client_output_file(f, n, d, t)}")
-    if VERBOSE: print("done")
+    if VERBOSE: 
+        print(f"Test took {time.time() - tic} s")
+        print("done")

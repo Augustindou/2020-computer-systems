@@ -13,11 +13,11 @@ src_path = f"{java_project_path}src/"
 plt_path = f"{root_path}plots/"
 
 # number of clients
-n_clients = [40, 2, 5, 10, 20, 30, 50, 75, 100]
+n_clients = [40, 5, 10, 25, 50, 75, 100]
 # delay [ms]
-delays = np.array([10, 2, 4, 6, 8, 15, 20, 30, 40, 50])*1000
+delays = np.array([10, 2, 5, 8, 15, 20, 30, 50])*1000
 # server threads
-n_threads = [6, 2, 4, 8, 10, 12, 16]
+n_threads = [6, 2, 4, 8, 12, 16]
 
 # input files (txt and path will be added), will always run all inputs
 input_files = ["easy-requests", "hard-requests", "network-intensive-requests"]
@@ -25,10 +25,10 @@ input_files = ["easy-requests", "hard-requests", "network-intensive-requests"]
 n_clients = [40]
 delays = np.array([10])*1000
 n_threads = [6]
-input_files = ["hard-requests", "easy-requests"]
+input_files = ["hard-requests"]
 
 # code variables
-hostname = "192.168.1.105"
+hostname = "192.168.1.22"
 port     = 10069
 db_file  = f"{java_project_path}assets/dbdata.txt"
 verbose_clients = "false"

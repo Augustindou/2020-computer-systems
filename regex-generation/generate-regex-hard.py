@@ -1,8 +1,6 @@
 import random
 import string
 
-# resulting regexes will be in O(regex_complexity^2 * len(string to match))
-regex_complexity = 1
 
 regexes = []
 ends = []
@@ -10,7 +8,7 @@ while len(regexes) < 25:
     if (random.choices([True, False], weights=[25, 75], k=1)[0]) and len(regexes) > 1:
         regexes.append(random.choice(regexes))
     else:
-        end_of_regex = ''.join(random.choice(string.ascii_lowercase) for _ in range(10))
+        end_of_regex = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(90git ))
         if end_of_regex not in ends:
             ends.append(end_of_regex)
             number_of_cat = 2

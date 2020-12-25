@@ -23,7 +23,7 @@ n_threads = [6, 2, 4, 8, 12, 16]
 input_files = ["easy-requests", "hard-requests", "network-intensive-requests"]
 
 # code variables
-hostname = "192.168.1.22"
+hostname = "192.168.1.56"
 port     = 10069
 db_file  = f"{java_project_path}assets/dbdata.txt"
 verbose_clients = "false"

@@ -2,7 +2,7 @@ import random
 import string
 
 starting_chars = ['B', 'C', 'D', 'F', 'G', 'H', 'L', 'M', 'N', 'P', 'R', 'S']
-lowercase_chars = ['a', 'e', 'i', 'o', 'u']git 
+lowercase_chars = ['a', 'e', 'i', 'o', 'u']
 
 random.shuffle(starting_chars)
 random.shuffle(lowercase_chars)

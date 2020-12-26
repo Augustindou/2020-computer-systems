@@ -20,9 +20,6 @@ if VERBOSE: print("--- Compiled java server files ---")
 if VERBOSE: print("--- Running tests ---")
 # iterate over all combinations
 for i, (f, (n, d, t)) in enumerate(itertools.product(input_files, variable_inputs)):
-    # skip the ones already done
-    if True : 
-        continue
     if VERBOSE: print(f"--- Server Test #{i} : {t} threads (client should be on {n} clients, {d}ms delay, {f}) ---")
     # java OptimizedServer <port number> <database text file> <number of threads> [result text file]
     tic = time.time()
@@ -30,12 +27,9 @@ for i, (f, (n, d, t)) in enumerate(itertools.product(input_files, variable_input
     if VERBOSE: 
         print(f"Test took {time.time() - tic} s")
         print("done")
-
+"""
 # OPTIMIZED
 for i, (f, (n, d, t)) in enumerate(itertools.product(input_files, variable_inputs_optimized)):
-    # skip the ones already done
-    if i < 12 : 
-        continue
     if VERBOSE: print(f"--- Server Test #{i} (optimized) : {t} threads (client should be on {n} clients, {d}ms delay, {f}) ---")
     # java OptimizedServer <port number> <database text file> <number of threads> [result text file]
     tic = time.time()
@@ -43,3 +37,4 @@ for i, (f, (n, d, t)) in enumerate(itertools.product(input_files, variable_input
     if VERBOSE: 
         print(f"Test took {time.time() - tic} s")
         print("done")
+"""

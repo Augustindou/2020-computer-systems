@@ -22,6 +22,12 @@ n_threads = [6, 2, 4, 8, 12, 16]
 # input files (txt and path will be added), will always run all inputs
 input_files = ["easy-requests", "hard-requests", "network-intensive-requests"]
 
+# re-run
+n_clients = [40]
+delays = [10000]
+n_threads = [6]
+input_files = ["network-intensive-requests"]
+
 # code variables
 hostname = "192.168.1.56"
 port     = 10069

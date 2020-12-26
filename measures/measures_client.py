@@ -18,6 +18,9 @@ if VERBOSE: print("--- Compiled java client file ---")
 if VERBOSE: print("--- Running tests ---")
 # iterate over all combinations
 for i, (f, (n, d, t)) in enumerate(itertools.product(input_files, variable_inputs)):
+    # skip the ones already done
+    if i < 11 : 
+        continue
     if VERBOSE: print(f"--- Client Test #{i} : {n} clients, {d}ms delay, {f} (server should be on {t} threads) ---")
     # waiting for server
     time.sleep(20)

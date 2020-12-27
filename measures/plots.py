@@ -8,7 +8,7 @@ output_file = [lambda f, n, d, t : f"{server_output_file(f, n, d, t)}_queue.txt"
                lambda f, n, d, t : f"{client_output_file(f, n, d, t)}.txt".replace('\\', '')]
 
 plot_types = ["Queue", "Service", "Response"]
-plots = ["Number of clients [-]", "Mean delay [ms]", "Number of threads [-]"]
+plots = ["Number of clients [-]", "Mean delay [s]", "Number of threads [-]"]
 input_values = [variable_inputs[np.logical_and(variable_inputs[:,1] == delays[0]   , variable_inputs[:,2] == n_threads[0])],
                 variable_inputs[np.logical_and(variable_inputs[:,0] == n_clients[0], variable_inputs[:,2] == n_threads[0])],
                 variable_inputs[np.logical_and(variable_inputs[:,0] == n_clients[0], variable_inputs[:,1] == delays[0]   )]]
@@ -22,7 +22,7 @@ for j, plot, input_variables in zip(range(len(plots)), plots, input_values):
         # plot variables
         plt.subplot(1, len(output_file), i+1)
         plt.xlabel(plot)
-        plt.ylabel(f"{plot_type} time [ms]")
+        plt.ylabel(f"{plot_type} time [s]")
         # iterate over requests types (easy, netw intensive, hard)
         for requests_type, c in zip(input_files, plot_colors):
             # iterate over different datapoints
@@ -32,12 +32,13 @@ for j, plot, input_variables in zip(range(len(plots)), plots, input_values):
                 # read the corresponding file
                 with open(file(requests_type, n, d, t), 'r') as f:
                     # add averages to listaverage
-                    lines = np.array(list(map(int, f.readlines())))
+                    lines = np.array(list(map(int, f.readlines())))/1000
                     avg = np.append(avg, np.average(lines))
                     std = np.append(std, np.std(lines))
+            
             # get argsort
             idx = np.argsort(input_variables[:, j])
-            plt.plot(input_variables[idx, j], avg[idx], label=requests_type.replace('-', ' '), color=c, marker='.')
-            plt.fill_between(input_variables[idx, j], avg[idx]-std[idx], avg[idx]+std[idx], color=c, alpha=0.1)
+            plt.plot(input_variables[idx, j] / (1000 if j==1 else 1), avg[idx], label=requests_type.replace('-', ' '), color=c, marker='.')
+            plt.fill_between(input_variables[idx, j] / (1000 if j==1 else 1), avg[idx]-std[idx], avg[idx]+std[idx], color=c, alpha=0.1)
             plt.legend()
     plt.savefig(f"{plt_path}{plot}", bbox_inches='tight')

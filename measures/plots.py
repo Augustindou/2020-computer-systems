@@ -65,7 +65,7 @@ for plot, input_variables, fig_name in zip(plots_optimized, input_values_optimiz
         # plot variables
         plt.subplot(1, len(plot_types), i+1)
         plt.xlabel(plot)
-        plt.ylabel(f"{plot_type} time [ms]")
+        plt.ylabel(f"{plot_type} time [s]")
         # iterate over requests types (easy, netw intensive, hard)
         for requests_type in optimized_requests_type:
             # iterate over different datapoints

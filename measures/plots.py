@@ -7,7 +7,7 @@ output_file = [lambda f, n, d, t : f"{server_output_file(f, n, d, t)}_queue.txt"
                lambda f, n, d, t : f"{server_output_file(f, n, d, t)}_service.txt".replace('\\', ''),
                lambda f, n, d, t : f"{client_output_file(f, n, d, t)}.txt".replace('\\', '')]
 
-plot_types = ["Queue", "Service", "Response"]
+plot_types = ["Queue", "Processing", "Response"]
 plots = ["Number of clients [-]", "Mean delay [s]", "Number of threads [-]"]
 input_values = [variable_inputs[np.logical_and(variable_inputs[:,1] == delays[0]   , variable_inputs[:,2] == n_threads[0])],
                 variable_inputs[np.logical_and(variable_inputs[:,0] == n_clients[0], variable_inputs[:,2] == n_threads[0])],

@@ -8,8 +8,8 @@ output_file = [lambda f, n, d, t : f"{server_output_file(f, n, d, t)}_queue.txt"
                lambda f, n, d, t : f"{server_output_file(f, n, d, t)}_service.txt".replace('\\', ''),
                lambda f, n, d, t : f"{client_output_file(f, n, d, t)}.txt".replace('\\', '')]
 
-plot_types = ["Queue", "Service", "Response"]
-plots = ["Number of clients [-]", "Mean Request Rate [Hz]", "Number of threads [-]"]
+plot_types = ["Queue", "Processing", "Response"]
+plots = ["Number of clients [-]", "Mean request rate [Hz]", "Number of threads [-]"]
 input_values = [variable_inputs[np.logical_and(variable_inputs[:,1] == delays[0]   , variable_inputs[:,2] == n_threads[0])],
                 variable_inputs[np.logical_and(variable_inputs[:,0] == n_clients[0], variable_inputs[:,2] == n_threads[0])],
                 variable_inputs[np.logical_and(variable_inputs[:,0] == n_clients[0], variable_inputs[:,1] == delays[0]   )]]
@@ -157,7 +157,6 @@ for i, file, plot_type in zip(range(len(output_file_expected)), output_file_expe
 
         plt.plot(input_values_expected[idx, 2], expected_response[idx], label=plot_label_theoretical, color=plot_colors_theoretical, marker='.')
         plt.legend()
-
 
 plt.savefig(f"{plt_path}{fig_names_expected}", bbox_inches='tight')
     

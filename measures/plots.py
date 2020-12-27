@@ -81,7 +81,7 @@ for plot, input_variables, fig_name in zip(plots_optimized, input_values_optimiz
                         std = np.append(std, np.std(lines))
                 # get argsort
                 idx = np.argsort(input_variables[:, 2])
-                plt.plot(input_variables[idx, 2], avg[idx], label=requests_type.replace('-', ' '), color=c, marker='.')
+                plt.plot(input_variables[idx, 2], avg[idx], label=name, color=c, marker='.')
                 plt.fill_between(input_variables[idx, 2], avg[idx]-std[idx], avg[idx]+std[idx], color=c, alpha=0.1)
                 plt.legend()
         plt.savefig(f"{plt_path}{fig_name}", bbox_inches='tight')

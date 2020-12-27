@@ -12,6 +12,7 @@ plots = ["Number of clients [-]", "Mean delay [ms]", "Number of threads [-]"]
 input_values = [variable_inputs[np.logical_and(variable_inputs[:,1] == delays[0]   , variable_inputs[:,2] == n_threads[0])],
                 variable_inputs[np.logical_and(variable_inputs[:,0] == n_clients[0], variable_inputs[:,2] == n_threads[0])],
                 variable_inputs[np.logical_and(variable_inputs[:,0] == n_clients[0], variable_inputs[:,1] == delays[0]   )]]
+plot_colors = ['b', 'g', 'r']
 
 # plot the different plots (n_clients, delay and threads)
 for j, plot, input_variables in zip(range(len(plots)), plots, input_values):
@@ -23,18 +24,20 @@ for j, plot, input_variables in zip(range(len(plots)), plots, input_values):
         plt.xlabel(plot)
         plt.ylabel(f"{plot_type} time [ms]")
         # iterate over requests types (easy, netw intensive, hard)
-        for requests_type in input_files:
+        for requests_type, c in zip(input_files, plot_colors):
             # iterate over different datapoints
             avg = np.array([])
+            std = np.array([])
             for n, d, t in input_variables:
                 # read the corresponding file
                 with open(file(requests_type, n, d, t), 'r') as f:
                     # add averages to listaverage
-                    lines = f.readlines()
-                    avg = np.append(avg, sum( map(int, lines) ) / len(lines) )
-                    # TODO : add standard deviation and stuff
+                    lines = np.array(list(map(int, f.readlines())))
+                    avg = np.append(avg, np.average(lines))
+                    std = np.append(std, np.std(lines))
             # get argsort
             idx = np.argsort(input_variables[:, j])
-            plt.plot(input_variables[idx, j], avg[idx], label=requests_type.replace('-', ' '))
+            plt.plot(input_variables[idx, j], avg[idx], label=requests_type.replace('-', ' '), color=c, marker='.')
+            plt.fill_between(input_variables[idx, j], avg[idx]-std[idx], avg[idx]+std[idx], color=c, alpha=0.1)
             plt.legend()
     plt.savefig(f"{plt_path}{plot}", bbox_inches='tight')
